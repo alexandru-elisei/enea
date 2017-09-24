@@ -31,3 +31,5 @@ $string['modulenameplural'] = 'ENEA Course Selection';
 $string['modulename_help'] = 'Select ENEA Course';
 $string['pluginadministration'] = 'ENEA Administration';
 
+$string['medicine'] = 'Medicine';
+$string['nursing'] = 'Nursing';

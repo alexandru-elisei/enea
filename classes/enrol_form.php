@@ -43,5 +43,16 @@ class mod_enea_enrol_form extends moodleform {
 
         $mform->addElement('header', 'generalhdr', get_string('modulename', 'mod_enea'));
         $mform->setExpanded('generalhdr', true);
+
+        $mform->addElement('html', '</br>');
+        $mform->addElement('html', '<h5 id="mod_enea_enrol_form_heading_0">Choose from the options listed below to generate a module you would like to take.</h5>');
+        $mform->addElement('html', '</br>');
+
+        $objs = array();
+        $objs[0] = $mform->createElement('advcheckbox', 'medicine', '', get_string('medicine', 'mod_enea'), array(), array(false, true));
+        $objs[1] = $mform->createElement('advcheckbox', 'nursing', '', get_string('nursing', 'mod_enea'), array(), array(false, true));
+        $group = $mform->addElement('group', 'childrengroup', 'a) Field of Expertise:', $objs, array('                               ', '<br/>'), false);
+
+        $mform->disabledIf('nursing', 'medicine', 'noteq', true);
     }
 }
