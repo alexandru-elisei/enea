@@ -31,5 +31,13 @@ $string['modulenameplural'] = 'ENEA Course Selection';
 $string['modulename_help'] = 'Select ENEA Course';
 $string['pluginadministration'] = 'ENEA Administration';
 
+$string['chooseoptions'] = 'Choose from the options listed below to generate a module you would like to take.';
+
+$string['fieldofexpertise'] = 'a) Field of Expertise:';
 $string['medicine'] = 'Medicine';
 $string['nursing'] = 'Nursing';
+$string['nutrition'] = 'Nutrition';
+$string['pediatrician'] = 'Pediatrician';
+$string['gynecologist'] = 'Gynecologist';
+$string['gp'] = 'GP';
+$string['other'] = 'Other';
