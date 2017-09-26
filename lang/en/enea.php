@@ -41,3 +41,39 @@ $string['pediatrician'] = 'Pediatrician';
 $string['gynecologist'] = 'Gynecologist';
 $string['gp'] = 'GP';
 $string['other'] = 'Other';
+
+$string['topics'] = 'b) Topics you are interested in:';
+
+$string['breastfeeding'] = 'Breastfeeding';
+$string['composition'] = 'Composition';
+$string['practice'] = 'Practice';
+$string['healtheffects'] = 'Health effects';
+$string['obesity'] = 'Obesity';
+$string['diabetes'] = 'Diabetes';
+$string['gastrointestinalinfections'] = 'Gastrointestinal Infections';
+$string['hypertension'] = 'Hypertension';
+$string['allergy'] = 'Allergy';
+$string['respiratoryinfections'] = 'Respiratory Infections';
+$string['cognition'] = 'Cognition';
+$string['disease'] = 'disease';
+$string['maternalhealth'] = 'Maternal Health';
+$string['statistics'] = 'Statistics';
+$string['contraindications'] = 'Contraindications';
+$string['support'] = 'Support';
+$string['interventions'] = 'Interventions';
+
+$string['breastmilksubst'] = 'Breastmilk Substitutes';
+$string['definition'] = 'Definition';
+$string['hypernatremia'] = 'Hypernatremia';
+$string['history'] = 'History';
+$string['marketing'] = 'Marketing';
+$string['decisionmaking'] = 'Decision making';
+$string['psychology'] = 'Psychology';
+$string['components'] = 'Components';
+$string['bioactivecompounds'] = 'Bioactive Compounds';
+$string['qualitysafety'] = 'Quality and Safety';
+$string['hygiene'] = 'Hygiene';
+$string['preparation'] = 'Preparation';
+$string['bottlefeeding'] = 'Bottle-feeding';
+$string['weaning'] = 'Weaning';
+
