@@ -48,13 +48,16 @@ class mod_enea_selection_form extends moodleform {
         $objs = array();
         $objs[0] = $mform->createElement('advcheckbox', 'medicine', '', get_string('medicine', 'mod_enea'), array(), array(0, 1));
         $objs[1] = $mform->createElement('advcheckbox', 'pediatrician', '', get_string('pediatrician', 'mod_enea'), array(), array(0, 1));
-        $objs[2] = $mform->createElement('advcheckbox', 'nursing', '', get_string('nursing', 'mod_enea'), array(), array(0, 1));
-        $objs[3] = $mform->createElement('advcheckbox', 'gynecologist', '', get_string('gynecologist', 'mod_enea'), array(), array(0, 1));
-        $objs[4] = $mform->createElement('advcheckbox', 'nutrition', '', get_string('nutrition', 'mod_enea'), array(), array(0, 1));
-        $objs[5] = $mform->createElement('advcheckbox', 'gp', '', get_string('gp', 'mod_enea'), array(), array(0, 1));
-        $objs[6] = $mform->createElement('html', '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;');
-        $objs[7] = $mform->createElement('advcheckbox', 'other', '', get_string('other', 'mod_enea'), array(), array(0, 1));
-        $group = $mform->addElement('group', 'fieldofexpertisegroup', get_string('fieldofexpertise', 'mod_enea'), $objs, array('&emsp;&emsp;', '<br/>'), false);
+        $objs[2] = $mform->createElement('advcheckbox', 'gynecologist', '', get_string('gynecologist', 'mod_enea'), array(), array(0, 1));
+        $objs[3] = $mform->createElement('advcheckbox', 'gp', '', get_string('gp', 'mod_enea'), array(), array(0, 1));
+        $objs[4] = $mform->createElement('advcheckbox', 'other', '', get_string('other', 'mod_enea'), array(), array(0, 1));
+        $medicinegroup = $mform->createElement('group', 'medicinegroup', '', $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
+
+        $objs = array();
+        $objs[0] = $medicinegroup;
+        $objs[1] = $mform->createElement('advcheckbox', 'nursing', '', get_string('nursing', 'mod_enea'), array(), array(0, 1));
+        $objs[2] = $mform->createElement('advcheckbox', 'nutrition', '', get_string('nutrition', 'mod_enea'), array(), array(0, 1));
+        $group = $mform->addElement('group', 'expertisegroup', get_string('fieldofexpertise', 'mod_enea'), $objs, array('<br/>'), false);
 
         $mform->disabledIf('pediatrician', 'medicine', 'noteq', 1);
         $mform->disabledIf('gynecologist', 'medicine', 'noteq', 1);
