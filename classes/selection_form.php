@@ -36,38 +36,61 @@ require_once($CFG->libdir . '/formslib.php');
 class mod_enea_selection_form extends moodleform {
 
     /**
+     * Keywords that depend on the 'medicine' keyword.
+     */
+    protected $medicinerevdeps = array(
+        'pediatrician', 'gynecologist', 'gp', 'other'
+    );
+
+    /**
+     * Keywords that depend on the 'breastmilk substitute' keyword.
+     */
+    protected $bmsrevdeps = array(
+        'nutrition', 'composition', 'practice', 'healtheffects', 'obesity',
+        'diabetes', 'gastrointestinalinfections', 'hypertension', 'allergy',
+        'respiratoryinfections', 'cognition', 'disease', 'maternalhealth',
+        'statistics', 'contraindications', 'support', 'interventions'
+    );
+
+    /**
+     * Keywords that depend on the 'breastfeeding' keyword.
+     */
+    protected $bfrevdeps = array(
+        'nutrition', 'composition', 'practice', 'healtheffects', 'obesity',
+        'diabetes', 'gastrointestinalinfections', 'hypertension', 'allergy',
+        'respiratoryinfections', 'cognition', 'disease', 'maternalhealth',
+        'statistics', 'contraindications', 'support', 'interventions'
+    );
+
+    /**
+     * Types and themes.
+     */
+    protected $typesthemes = array(
+        'science', 'guidelines', 'practice'
+    );
+
+    /**
      * The standard form definiton.
      */
     public function definition () {
         $mform = $this->_form;
 
         $mform->addElement('html', '</br>');
-        $mform->addElement('html', '<h5 id="mod_enea_form_heading_0">'
-            .get_string('chooseoptions', 'mod_enea').'</h5>');
+        $mform->addElement('html', '<h5 id="mod_enea_form_heading_0">' .get_string('chooseoptions', 'mod_enea').'</h5>');
         $mform->addElement('html', '</br>');
 
         $objs = array();
-        $objs[] = $mform->createElement('advcheckbox', 'medicine', '',
-            get_string('medicine', 'mod_enea'), array(), array(0, 1));
-        $objs[] = $mform->createElement('advcheckbox', 'pediatrician', '',
-            get_string('pediatrician', 'mod_enea'), array(), array(0, 1));
-        $objs[] = $mform->createElement('advcheckbox', 'gynecologist', '',
-            get_string('gynecologist', 'mod_enea'), array(), array(0, 1));
-        $objs[] = $mform->createElement('advcheckbox', 'gp', '',
-            get_string('gp', 'mod_enea'), array(), array(0, 1));
-        $objs[] = $mform->createElement('advcheckbox', 'other', '',
-            get_string('other', 'mod_enea'), array(), array(0, 1));
-        $medicinegroup = $mform->createElement('group', 'medicinegroup', '',
-            $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
+        $objs[] = $mform->createElement('advcheckbox', 'medicine', '', get_string('medicine', 'mod_enea'), array(), array(0, 1));
+        foreach ($this->medicinerevdeps as $keyword) {
+            $objs[] = $mform->createElement('advcheckbox', $keyword, '', get_string($keyword, 'mod_enea'), array(), array(0, 1));
+        }
+        $medicinegroup = $mform->createElement('group', 'medicinegroup', '', $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
 
         $objs = array();
         $objs[] = $medicinegroup;
-        $objs[] = $mform->createElement('advcheckbox', 'nursing', '',
-            get_string('nursing', 'mod_enea'), array(), array(0, 1));
-        $objs[] = $mform->createElement('advcheckbox', 'nutrition', '',
-            get_string('nutrition', 'mod_enea'), array(), array(0, 1));
-        $mform->addElement('group', 'foegroup', get_string('fieldofexpertise', 'mod_enea'),
-            $objs, array('<br/>'), false);
+        $objs[] = $mform->createElement('advcheckbox', 'nursing', '', get_string('nursing', 'mod_enea'), array(), array(0, 1));
+        $objs[] = $mform->createElement('advcheckbox', 'nutrition', '', get_string('nutrition', 'mod_enea'), array(), array(0, 1));
+        $mform->addElement('group', 'foegroup', get_string('fieldofexpertise', 'mod_enea'), $objs, array('<br/>'), false);
         $mform->addHelpButton('foegroup', 'foehelp', 'mod_enea');
 
         $mform->disabledIf('pediatrician', 'medicine', 'noteq', 1);
@@ -77,82 +100,143 @@ class mod_enea_selection_form extends moodleform {
 
         $mform->addElement('html', '<br/>');
 
-        $bfrevdeps = array(
-            'nutrition', 'composition', 'practice', 'healtheffects', 'obesity',
-            'diabetes', 'gastrointestinalinfections', 'hypertension', 'allergy',
-            'respiratoryinfections', 'cognition', 'disease', 'maternalhealth',
-            'statistics', 'contraindications', 'support', 'interventions'
-        );
         $objs = array();
-        $objs[] = $mform->createElement('advcheckbox', 'breastfeeding', '',
-            get_string('breastfeeding', 'mod_enea'), array(), array(0, 1));
-        foreach ($bfrevdeps as $key => $name) {
-            $objs[] = $mform->createElement('advcheckbox', 'bf'.$name,
-                '', get_string($name, 'mod_enea'), array(), array(0, 1));
-            $mform->disabledIf('bf'.$name, 'breastfeeding', 'noteq', 1);
+        $objs[] = $mform->createElement('advcheckbox', 'breastfeeding', '', get_string('breastfeeding', 'mod_enea'), array(), array(0, 1));
+        foreach ($this->bfrevdeps as $keyword) {
+            $objs[] = $mform->createElement('advcheckbox', 'bf'.$keyword, '', get_string($keyword, 'mod_enea'), array(), array(0, 1));
+            $mform->disabledIf('bf'.$keyword, 'breastfeeding', 'noteq', 1);
         }
-        $breastfeedinggroup = $mform->createElement('group', 'breastfeedinggroup', '',
-            $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
+        $breastfeedinggroup = $mform->createElement('group', 'breastfeedinggroup', '', $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
 
-        $bmsrevdeps = array(
-            'definition', 'hypernatremia', 'history', 'marketing',
-            'contraindications', 'decisionmaking', 'psychology', 'components',
-            'composition', 'bioactivecompounds', 'qualitysafety', 'hygiene',
-            'preparation', 'bottlefeeding', 'weaning'
-        );
         $objs = array();
         $objs[] = $mform->createElement('advcheckbox', 'breastmilksubst', '',
-            get_string('breastmilksubst', 'mod_enea'), array(), array(0, 1));
-        foreach ($bmsrevdeps as $key => $name) {
-            $objs[] = $mform->createElement('advcheckbox', 'bms'.$name,
-                '', get_string($name, 'mod_enea'), array(), array(0, 1));
+                                        get_string('breastmilksubst', 'mod_enea'), array(), array(0, 1));
+        foreach ($this->bmsrevdeps as $key => $name) {
+            $objs[] = $mform->createElement('advcheckbox', 'bms'.$name, '', get_string($name, 'mod_enea'), array(), array(0, 1));
             $mform->disabledIf('bms'.$name, 'breastmilksubst', 'noteq', 1);
         }
         $breastmilksubstgroup = $mform->createElement('group', 'breastmilksubstgroup', '',
-            $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
+                                                      $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
 
         $objs = array();
         $objs[] = $breastfeedinggroup;
         $objs[] = $breastmilksubstgroup;
-        $mform->addElement('group', 'topicsgroup', get_string('topics', 'mod_enea'),
-            $objs, array('<br/>'), false);
+        $mform->addElement('group', 'topicsgroup', get_string('topics', 'mod_enea'), $objs, array('<br/>'), false);
         $mform->addHelpButton('topicsgroup', 'topicshelp', 'mod_enea');
 
         $mform->addElement('html', '<br/>');
 
-        $mform->addElement('text', 'othertopicstext',
-            get_string('othertopics', 'mod_enea'), 'size="20"');
-        $mform->setType('othertopicstext', PARAM_NOTAGS);
+        $mform->addElement('text', 'text', get_string('othertopics', 'mod_enea'), 'size="20"');
+        $mform->setType('text', PARAM_NOTAGS);
 
         $mform->addElement('html', '<br/>');
 
         $objs = array();
-        $typethemes = array(
-            'science', 'guidelines', 'practice'
-        );
-        foreach ($typethemes as $name) {
-            $objs[] = $mform->createElement('advcheckbox', 'tt'.$name, '',
-                get_string($name, 'mod_enea'), array(), array(0, 1));
+        foreach ($this->typesthemes as $name) {
+            $objs[] = $mform->createElement('advcheckbox', 'typesthemes'.$name, '', get_string($name, 'mod_enea'), array(), array(0, 1));
         }
-        $mform->addElement('group', 'typethemesgroup',
-            get_string('typesthemes', 'mod_enea'), $objs, array('<br/>'));
+        $mform->addElement('group', 'typesthemesgroup', get_string('typesthemes', 'mod_enea'), $objs, array('<br/>'), false);
 
         $mform->addElement('html', '<br/>');
 
         $objs = array();
-        $objs[] = $mform->createElement('advcheckbox', 'cmepoints',
-            get_string('yes', 'mod_enea'), array(), array(0, 1));
-        $mform->addElement('group', 'cmepointsgroup',
-            get_string('cmepoints', 'mod_enea'), $objs, array('<br/>'));
+        $objs[] = $mform->createElement('advcheckbox', 'cme', get_string('yes', 'mod_enea'), array(), array(0, 1));
+        $mform->addElement('group', 'cmepointsgroup', get_string('cmepoints', 'mod_enea'), $objs, array('<br/>'), false);
 
         $mform->addElement('html', '<br/>');
 
         $btnarr= array();
         $clearattrs = array('class' => 'btn btn-secondary', 'type' => 'button');
-        $btnarr[] = $mform->createElement('reset', 'clearbutton',
-            get_string('clear', 'mod_enea'), $clearattrs);
-        $btnarr[] = $mform->createElement('submit', 'searchbutton',
-            get_string('search', 'mod_enea'));
+        $btnarr[] = $mform->createElement('reset', 'clearbutton', get_string('clear', 'mod_enea'), $clearattrs);
+        $btnarr[] = $mform->createElement('submit', 'searchbutton', get_string('search', 'mod_enea'));
         $mform->addGroup($btnarr, 'buttongroup', '', ' ', false);
+
+        $customdata = $this->_customdata;
+        if ($customdata) {
+            if (isset($customdata['id']) and $customdata['id']) {
+                $mform->addElement('hidden', 'id', $customdata['id']);
+                $mform->setType('id', PARAM_INT);
+            } else if (isset($customdaa['cmid']) and $customdata['cmid']) {
+                $mform->addElement('hidden', 'cmid', $customdata['cmid']);
+                $mform->setType('cmid', PARAM_INT);
+            }
+        }
+    }
+
+    public function get_selection($formdata) {
+        $request = array();
+
+        $formdata = (array)$formdata;
+        $request['cme'] = $this->is_checked($formdata, 'cme');
+
+        $expertise = array();
+        $medicine = array();
+        if ($this->is_checked($formdata, 'medicine')) {
+            foreach ($this->medicinerevdeps as $keyword) {
+                if ($this->is_checked($formdata, $keyword)) {
+                    $medicine[$keyword] = true;
+                }
+            }
+        }
+        if (!empty($medicine)) {
+            $expertise['medicine'] = $medicine;
+        }
+        if ($this->is_checked($formdata, 'nursing')) {
+            $expertise['nursing'] = true;
+        }
+        if ($this->is_checked($formdata, 'nutrition')) {
+            $expertise['nutrition'] = true;
+        }
+        if (!empty($expertise)) {
+            $request['expertise'] = $expertise;
+        }
+
+        $topics = array();
+        $breastfeeding = array();
+        if ($this->is_checked($formdata, 'breastfeeding')) {
+            foreach ($this->bfrevdeps as $keyword) {
+                if ($this->is_checked($formdata, 'bf'.$keyword)) {
+                    $breastfeeding[$keyword] = true;
+                }
+            }
+        }
+        if (!empty($breastfeeding)) {
+            $topics['breastfeeding'] = $breastfeeding;
+        }
+
+        $breastmilksubst = array();
+        if ($this->is_checked($formdata, 'breastmilksubst')) {
+            foreach ($this->bmsrevdeps as $keyword) {
+                if ($this->is_checked($formdata, 'bms'.$keyword)) {
+                    $breastmilksubst[$keyword] = true;
+                }
+            }
+        }
+        if (!empty($breastmilksubst)) {
+            $topics['breastmilksubst'] = $breastmilksubst;
+        }
+        if (!empty($topics)) {
+            $request['topics'] = $topics;
+        }
+
+        if ($this->is_checked($formdata, 'text')) {
+            $request['text'] = $formdata['text'];
+        }
+
+        $themes = array();
+        foreach ($this->typesthemes as $theme) {
+            if ($this->is_checked($formdata, 'typesthemes'.$theme)) {
+                $themes[$theme] = true;
+            }
+        }
+        if (!empty($themes)) {
+            $request['themes'] = $themes;
+        }
+
+        return $request;
+    }
+
+    protected function is_checked($formdata, $field) {
+        return (isset($formdata[$field]) and $formdata[$field]);
     }
 }

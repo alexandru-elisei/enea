@@ -30,6 +30,7 @@ $string['modulename'] = 'ENEA Course Selection';
 $string['modulenameplural'] = 'ENEA Course Selection';
 $string['modulename_help'] = 'Select ENEA Course';
 $string['pluginadministration'] = 'ENEA Administration';
+$string['nonewmodules'] = 'No new modules';
 
 $string['chooseoptions'] = 'Choose from the options listed below to generate a module you would like to take.';
 
@@ -90,4 +91,6 @@ $string['cmepoints'] = 'e) CME points';
 $string['yes'] = 'Yes';
 
 $string['clear'] = 'Clear';
+
+$string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
 $string['search'] = 'Search';

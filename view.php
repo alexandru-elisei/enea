@@ -25,11 +25,11 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-// Course_module ID, or
+// Course_module id, or
 $id = optional_param('id', 0, PARAM_INT);
 
 // ... module instance id.
-$e  = optional_param('e', 0, PARAM_INT);
+$e  = optional_param('cmid', 0, PARAM_INT);
 
 if ($id) {
     $cm             = get_coursemodule_from_id('enea', $id, 0, false, MUST_EXIST);
@@ -47,12 +47,32 @@ require_login($course, true, $cm);
 
 $modulecontext = context_module::instance($cm->id);
 
-$mform = new mod_enea_selection_form();
-
 $PAGE->set_url('/mod/enea/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
+
+if ($id) {
+    $customdata = array('id' => $id);
+} else {
+    $customdata = array('cmid' => $e);
+}
+$mform = new mod_enea_selection_form(null, $customdata);
+$formdata = $mform->get_data();
+if (!empty($formdata)) {
+    for ($i = 0; $i < 10; $i++) {
+        print('<br/>');
+    }
+    $result = $mform->get_selection($formdata);
+    print_r($result);
+
+    print_r($customdata);
+
+    print_r($PAGE);
+
+    $mform = new mod_enea_selection_form(null, $customdata);
+}
+
 
 echo $OUTPUT->header();
 $mform->display();
