@@ -34,6 +34,9 @@ $string['pluginadministration'] = 'ENEA Administration';
 $string['chooseoptions'] = 'Choose from the options listed below to generate a module you would like to take.';
 
 $string['fieldofexpertise'] = 'a) Field of Expertise:';
+$string['foehelp'] = 'Field of Expertise';
+$string['foehelp_help'] = 'Please select your field of study.';
+
 $string['medicine'] = 'Medicine';
 $string['nursing'] = 'Nursing';
 $string['nutrition'] = 'Nutrition';
@@ -43,6 +46,8 @@ $string['gp'] = 'GP';
 $string['other'] = 'Other';
 
 $string['topics'] = 'b) Topics you are interested in:';
+$string['topicshelp'] = 'Topics you are interested in';
+$string['topicshelp_help'] = 'Please select the topics you are interested in.';
 
 $string['breastfeeding'] = 'Breastfeeding';
 $string['composition'] = 'Composition';
@@ -77,3 +82,5 @@ $string['preparation'] = 'Preparation';
 $string['bottlefeeding'] = 'Bottle-feeding';
 $string['weaning'] = 'Weaning';
 
+$string['clear'] = 'Clear';
+$string['search'] = 'Search';
