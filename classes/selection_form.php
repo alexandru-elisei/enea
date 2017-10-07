@@ -47,24 +47,24 @@ class mod_enea_selection_form extends moodleform {
         $mform->addElement('html', '</br>');
 
         $objs = array();
-        $objs[0] = $mform->createElement('advcheckbox', 'medicine', '',
+        $objs[] = $mform->createElement('advcheckbox', 'medicine', '',
             get_string('medicine', 'mod_enea'), array(), array(0, 1));
-        $objs[1] = $mform->createElement('advcheckbox', 'pediatrician', '',
+        $objs[] = $mform->createElement('advcheckbox', 'pediatrician', '',
             get_string('pediatrician', 'mod_enea'), array(), array(0, 1));
-        $objs[2] = $mform->createElement('advcheckbox', 'gynecologist', '',
+        $objs[] = $mform->createElement('advcheckbox', 'gynecologist', '',
             get_string('gynecologist', 'mod_enea'), array(), array(0, 1));
-        $objs[3] = $mform->createElement('advcheckbox', 'gp', '',
+        $objs[] = $mform->createElement('advcheckbox', 'gp', '',
             get_string('gp', 'mod_enea'), array(), array(0, 1));
-        $objs[4] = $mform->createElement('advcheckbox', 'other', '',
+        $objs[] = $mform->createElement('advcheckbox', 'other', '',
             get_string('other', 'mod_enea'), array(), array(0, 1));
         $medicinegroup = $mform->createElement('group', 'medicinegroup', '',
             $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
 
         $objs = array();
-        $objs[0] = $medicinegroup;
-        $objs[1] = $mform->createElement('advcheckbox', 'nursing', '',
+        $objs[] = $medicinegroup;
+        $objs[] = $mform->createElement('advcheckbox', 'nursing', '',
             get_string('nursing', 'mod_enea'), array(), array(0, 1));
-        $objs[2] = $mform->createElement('advcheckbox', 'nutrition', '',
+        $objs[] = $mform->createElement('advcheckbox', 'nutrition', '',
             get_string('nutrition', 'mod_enea'), array(), array(0, 1));
         $mform->addElement('group', 'foegroup', get_string('fieldofexpertise', 'mod_enea'),
             $objs, array('<br/>'), false);
@@ -84,11 +84,10 @@ class mod_enea_selection_form extends moodleform {
             'statistics', 'contraindications', 'support', 'interventions'
         );
         $objs = array();
-        $objs[0] = $mform->createElement('advcheckbox', 'breastfeeding', '',
+        $objs[] = $mform->createElement('advcheckbox', 'breastfeeding', '',
             get_string('breastfeeding', 'mod_enea'), array(), array(0, 1));
-        $off = count($objs);
         foreach ($bfrevdeps as $key => $name) {
-            $objs[$key+$off] = $mform->createElement('advcheckbox', 'bf'.$name,
+            $objs[] = $mform->createElement('advcheckbox', 'bf'.$name,
                 '', get_string($name, 'mod_enea'), array(), array(0, 1));
             $mform->disabledIf('bf'.$name, 'breastfeeding', 'noteq', 1);
         }
@@ -102,11 +101,10 @@ class mod_enea_selection_form extends moodleform {
             'preparation', 'bottlefeeding', 'weaning'
         );
         $objs = array();
-        $objs[0] = $mform->createElement('advcheckbox', 'breastmilksubst', '',
+        $objs[] = $mform->createElement('advcheckbox', 'breastmilksubst', '',
             get_string('breastmilksubst', 'mod_enea'), array(), array(0, 1));
-        $off = count($objs);
         foreach ($bmsrevdeps as $key => $name) {
-            $objs[$key+$off] = $mform->createElement('advcheckbox', 'bms'.$name,
+            $objs[] = $mform->createElement('advcheckbox', 'bms'.$name,
                 '', get_string($name, 'mod_enea'), array(), array(0, 1));
             $mform->disabledIf('bms'.$name, 'breastmilksubst', 'noteq', 1);
         }
@@ -114,11 +112,40 @@ class mod_enea_selection_form extends moodleform {
             $objs, array('<br/>'.str_repeat('&emsp;', 3)), false);
 
         $objs = array();
-        $objs[0] = $breastfeedinggroup;
-        $objs[1] = $breastmilksubstgroup;
+        $objs[] = $breastfeedinggroup;
+        $objs[] = $breastmilksubstgroup;
         $mform->addElement('group', 'topicsgroup', get_string('topics', 'mod_enea'),
             $objs, array('<br/>'), false);
         $mform->addHelpButton('topicsgroup', 'topicshelp', 'mod_enea');
+
+        $mform->addElement('html', '<br/>');
+
+        $mform->addElement('text', 'othertopicstext',
+            get_string('othertopics', 'mod_enea'), 'size="20"');
+        $mform->setType('othertopicstext', PARAM_NOTAGS);
+
+        $mform->addElement('html', '<br/>');
+
+        $objs = array();
+        $typethemes = array(
+            'science', 'guidelines', 'practice'
+        );
+        foreach ($typethemes as $name) {
+            $objs[] = $mform->createElement('advcheckbox', 'tt'.$name, '',
+                get_string($name, 'mod_enea'), array(), array(0, 1));
+        }
+        $mform->addElement('group', 'typethemesgroup',
+            get_string('typesthemes', 'mod_enea'), $objs, array('<br/>'));
+
+        $mform->addElement('html', '<br/>');
+
+        $objs = array();
+        $objs[] = $mform->createElement('advcheckbox', 'cmepoints',
+            get_string('yes', 'mod_enea'), array(), array(0, 1));
+        $mform->addElement('group', 'cmepointsgroup',
+            get_string('cmepoints', 'mod_enea'), $objs, array('<br/>'));
+
+        $mform->addElement('html', '<br/>');
 
         $btnarr= array();
         $clearattrs = array('class' => 'btn btn-secondary', 'type' => 'button');
