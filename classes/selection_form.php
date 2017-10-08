@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File containing the enrol form.
+ * File containing the course selection form.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 
 /**
- * Enrol form.
+ * Course selection form.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
@@ -161,6 +161,9 @@ class mod_enea_selection_form extends moodleform {
                 $mform->setType('cmid', PARAM_INT);
             }
         }
+
+        $mform->addElement('hidden', 'stage', 0);
+        $mform->setType('stage', PARAM_INT);
     }
 
     public function get_selection($formdata) {

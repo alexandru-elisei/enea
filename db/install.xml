@@ -12,6 +12,8 @@
               <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
               <FIELD NAME="intro" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
               <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="text format of intro field"/>
+              <FIELD NAME="waitingresponse" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="waiting for server request"/>
+              <FIELD NAME="selectedcourses" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="selected courses"/>
           </FIELDS>
           <KEYS>
               <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

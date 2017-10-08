@@ -15,17 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * File containing the course selection form.
  *
- * @package     mod_enea
- * @copyright   2017 Alexandru Elisei <alexandru.elisei@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_enea
+ * @copyright  2017 Alexandru Elisei
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace mod_enea\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_enea';
-$plugin->release = '0.1.0';
-$plugin->version = 2017092402;
-$plugin->requires = 2016120503;
-$plugin->maturity = MATURITY_ALPHA;
+/**
+ * Get courses task class.
+ *
+ * @package    mod_enea
+ * @copyright  2017 Alexandru Elisei
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class get_courses extends \core\task\adhoc_task {
+
+    public function execute() {
+        global $DB;
+
+        $customdata = $this->get_custom_data();
+
+        $DB->set_field('enea', 'selectedcourses', strval(time()), array('id' => $customdata->id));
+        $DB->set_field('enea', 'waitingresponse', 0, array('id' => $customdata->id));
+    }
+}

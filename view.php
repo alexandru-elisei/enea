@@ -25,7 +25,7 @@
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-// Course_module id, or
+// Course module id, or
 $id = optional_param('id', 0, PARAM_INT);
 
 // ... module instance id.
@@ -45,6 +45,8 @@ if ($id) {
 
 require_login($course, true, $cm);
 
+$stage = optional_param('hidden', 0, PARAM_INT);
+
 $modulecontext = context_module::instance($cm->id);
 
 $PAGE->set_url('/mod/enea/view.php', array('id' => $cm->id));
@@ -57,22 +59,50 @@ if ($id) {
 } else {
     $customdata = array('cmid' => $e);
 }
-$mform = new mod_enea_selection_form(null, $customdata);
-$formdata = $mform->get_data();
-if (!empty($formdata)) {
-    for ($i = 0; $i < 10; $i++) {
-        print('<br/>');
+
+if ($stage == 0) {
+    $waiting = $DB->get_record('enea', array('id' => $cm->instance), 'waitingresponse', MUST_EXIST);
+    $waiting = $waiting->waitingresponse;
+    if ($waiting) {
+        $mform = new mod_enea_waiting_form(null, $customdata);
+        $PAGE->set_periodic_refresh_delay(2);
+    } else {
+        $mform = new mod_enea_selection_form(null, $customdata);
+        $formdata = $mform->get_data();
+        if (!empty($formdata)) {
+            $selection = $mform->get_selection($formdata);
+
+            $task = new \mod_enea\task\get_courses();
+            $taskargs = array();
+            $taskargs['id'] = $cm->instance;
+            $taskargs['selection'] = $selection;
+            $task->set_custom_data($taskargs);
+            $DB->set_field('enea', 'waitingresponse', 1, array('id' => $cm->instance));
+            \core\task\manager::queue_adhoc_task($task);
+
+            $mform = new mod_enea_waiting_form(null, $customdata);
+            $PAGE->set_periodic_refresh_delay(2);
+        }
     }
-    $result = $mform->get_selection($formdata);
-    print_r($result);
+} else if ($stage == 1) {
+    $waiting = $DB->get_record('enea', array('id' => $cm->instance), 'waitingresponse', MUST_EXIST);
+    $waiting = $waiting->waitingresponse;
+    if (!$waiting) {
+        $PAGE->set_periodic_refresh_delay(0);
+        $courses = $DB->get_record('enea', array('id' => $cm->instance), 'selectedcourses', MUST_EXIST);
+        $DB->set_field('enea', 'selectedcourses', '', array('id' => $cm->instance));
+        $mform = new mod_enea_selection_form(null, $customdata);
 
-    print_r($customdata);
+        for ($i = 0; $i < 10; $i++) {
+            print('<br/>');
+        }
+        print($courses);
 
-    print_r($PAGE);
-
-    $mform = new mod_enea_selection_form(null, $customdata);
+    } else {
+        $mform = new mod_enea_waiting_form(null, $customdata);
+        $PAGE->set_periodic_refresh_delay(2);
+    }
 }
-
 
 echo $OUTPUT->header();
 $mform->display();

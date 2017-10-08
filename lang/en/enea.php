@@ -98,3 +98,5 @@ $string['clear'] = 'Clear';
 
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
 $string['search'] = 'Search';
+
+$string['waitingforresponse'] = 'Waiting for server response';
