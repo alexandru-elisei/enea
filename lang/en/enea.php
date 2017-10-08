@@ -25,11 +25,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ENEA Course Selection';
-$string['modulename'] = 'ENEA Course Selection';
-$string['modulenameplural'] = 'ENEA Course Selection';
-$string['modulename_help'] = 'Select ENEA Course';
-$string['pluginadministration'] = 'ENEA Administration';
+$string['pluginname'] = 'ENeA Course Selection';
+$string['eneaname'] = 'Activity name';
+$string['eneaname_help'] = 'Title for the activity';
+$string['eneasettings'] = 'Settings';
+$string['eneafieldset'] = 'Fields';
+$string['modulename'] = 'ENeA Course Selection';
+$string['modulenameplural'] = 'ENeA Course Selection';
+$string['modulename_help'] = 'Activity to select courses a user wishes to follow in the ENeA program';
+$string['pluginadministration'] = 'ENeA Administration';
 $string['nonewmodules'] = 'No new modules';
 
 $string['chooseoptions'] = 'Choose from the options listed below to generate a module you would like to take.';
