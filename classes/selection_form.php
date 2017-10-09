@@ -177,18 +177,18 @@ class mod_enea_selection_form extends moodleform {
         if ($this->is_checked($formdata, 'medicine')) {
             foreach ($this->medicinerevdeps as $keyword) {
                 if ($this->is_checked($formdata, $keyword)) {
-                    $medicine[$keyword] = true;
+                    $medicine[] = $keyword;
                 }
             }
         }
         if (!empty($medicine)) {
-            $expertise['medicine'] = $medicine;
+            $expertise[] = array('medicine' => $medicine);
         }
         if ($this->is_checked($formdata, 'nursing')) {
-            $expertise['nursing'] = true;
+            $expertise[] = 'nursing';
         }
         if ($this->is_checked($formdata, 'nutrition')) {
-            $expertise['nutrition'] = true;
+            $expertise[] = 'nutrition';
         }
         if (!empty($expertise)) {
             $request['expertise'] = $expertise;
@@ -199,24 +199,24 @@ class mod_enea_selection_form extends moodleform {
         if ($this->is_checked($formdata, 'breastfeeding')) {
             foreach ($this->bfrevdeps as $keyword) {
                 if ($this->is_checked($formdata, 'bf'.$keyword)) {
-                    $breastfeeding[$keyword] = true;
+                    $breastfeeding[] = $keyword;
                 }
             }
         }
         if (!empty($breastfeeding)) {
-            $topics['breastfeeding'] = $breastfeeding;
+            $topics[] = array('breastfeeding' => $breastfeeding);
         }
 
         $breastmilksubst = array();
         if ($this->is_checked($formdata, 'breastmilksubst')) {
             foreach ($this->bmsrevdeps as $keyword) {
                 if ($this->is_checked($formdata, 'bms'.$keyword)) {
-                    $breastmilksubst[$keyword] = true;
+                    $breastmilksubst[] = $keyword;
                 }
             }
         }
         if (!empty($breastmilksubst)) {
-            $topics['breastmilksubst'] = $breastmilksubst;
+            $topics[] = array('breastmilksubst' => $breastmilksubst);
         }
         if (!empty($topics)) {
             $request['topics'] = $topics;
@@ -229,7 +229,7 @@ class mod_enea_selection_form extends moodleform {
         $themes = array();
         foreach ($this->typesthemes as $theme) {
             if ($this->is_checked($formdata, 'typesthemes'.$theme)) {
-                $themes[$theme] = true;
+                $themes[] = $theme;
             }
         }
         if (!empty($themes)) {

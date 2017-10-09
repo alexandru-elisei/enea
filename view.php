@@ -65,12 +65,15 @@ if ($stage == 0) {
     $waiting = $waiting->waitingresponse;
     if ($waiting) {
         $mform = new mod_enea_waiting_form(null, $customdata);
-        $PAGE->set_periodic_refresh_delay(2);
+        $PAGE->set_periodic_refresh_delay(30);
     } else {
         $mform = new mod_enea_selection_form(null, $customdata);
         $formdata = $mform->get_data();
         if (!empty($formdata)) {
             $selection = $mform->get_selection($formdata);
+
+            // TODO: delete me
+            for ($i = 0; $i < 10; $i++) {print('<br/>');} print_r(json_encode($selection));
 
             $task = new \mod_enea\task\get_courses();
             $taskargs = array();
@@ -81,7 +84,7 @@ if ($stage == 0) {
             \core\task\manager::queue_adhoc_task($task);
 
             $mform = new mod_enea_waiting_form(null, $customdata);
-            $PAGE->set_periodic_refresh_delay(2);
+            $PAGE->set_periodic_refresh_delay(30);
         }
     }
 } else if ($stage == 1) {
@@ -100,7 +103,7 @@ if ($stage == 0) {
 
     } else {
         $mform = new mod_enea_waiting_form(null, $customdata);
-        $PAGE->set_periodic_refresh_delay(2);
+        $PAGE->set_periodic_refresh_delay(30);
     }
 }
 
