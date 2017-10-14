@@ -96,31 +96,32 @@ class mod_enea_search_results_form extends moodleform {
         //$objs[] = $mform->createElement('html', '<div class="col-xs-2">Time</div>');
         //$mform->addElement('group', 'typesthemesgroup', '', $objs, array(''), false);
         //$mform->addElement('html', html_writer::end_tag('div'));
+
         $mform->addElement('html', '<div class="row">');
-        $mform->addElement('html', '<div class="col-md-2"><dt><u>Title</u></dt></div>');
-        $mform->addElement('html', '<div class="col-md-2"><dt><u>Time</u></dt></div>');
+        $mform->addElement('html', '<div class="col-xs-4 col-md-2 col-lg-2"><dt><u>Title</u></dt></div>');
+        $mform->addElement('html', '<div class="col-xs-4 col-md-2 col-lg-2"><dt><u>Time</u></dt></div>');
         $mform->addElement('html', '</div>');
 
-        $divstart = html_writer::start_tag('div', array('class' => 'col-md-2')).'<span class="text-left">';
+        $divstart = html_writer::start_tag('div', array('class' => 'col-xs-4 col-md-2 col-lg-2')).'<span class="text-left">';
         $divend = '</span>'.html_writer::end_tag('div');
 
         $mform->addElement('html', '<div class="row">');
         $mform->addElement('html', $divstart);
-        $mform->addElement('html', '<label style="margin-bottom:0" name="checkbox" id="checkbox"><input type="checkbox" value="0">&ensp;Option 1</label>');
+        $mform->addElement('html', '<label class="no-bottom-margin" name="checkbox" id="checkbox"><input type="checkbox" value="0">&ensp;Option 1</label>');
         $mform->addElement('html', $divend);
         $mform->addElement('html', $divstart.'3h20min'.$divend);
         $mform->addElement('html', '</div>');
 
         $mform->addElement('html', '<div class="row">');
         $mform->addElement('html', $divstart);
-        $mform->addElement('html', '<label style="margin-bottom:0" name="checkbox2" id="checkbox2"><input type="checkbox" value="0">&ensp;Option 2</label>');
+        $mform->addElement('html', '<label class="no-bottom-margin" name="checkbox2" id="checkbox2"><input type="checkbox" value="0">&ensp;Option 2</label>');
         $mform->addElement('html', $divend);
         $mform->addElement('html', $divstart.'3h20min'.$divend);
         $mform->addElement('html', '</div>');
 
         $mform->addElement('html', '<div class="row">');
         $mform->addElement('html', $divstart);
-        $mform->addElement('html', '<label style="margin-bottom:0" name="checkbox3" id="checkbox3"><input type="checkbox" value="0">&ensp;Option 3</label>');
+        $mform->addElement('html', '<label class="no-bottom-margin" name="checkbox3" id="checkbox3"><input type="checkbox" value="0">&ensp;Option 3</label>');
         $mform->addElement('html', $divend);
         $mform->addElement('html', $divstart.'3h20min'.$divend);
         $mform->addElement('html', '</div>');
