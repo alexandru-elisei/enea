@@ -76,7 +76,7 @@ class mod_enea_selection_form extends moodleform {
         $mform = $this->_form;
 
         $mform->addElement('html', '</br>');
-        $mform->addElement('html', '<h5 id="mod_enea_form_heading_0">' .get_string('chooseoptions', 'mod_enea').'</h5>');
+        $mform->addElement('html', '<h5 id="mod_enea_form_heading_0">'.get_string('chooseoptions', 'mod_enea').'</h5>');
         $mform->addElement('html', '</br>');
 
         $objs = array();

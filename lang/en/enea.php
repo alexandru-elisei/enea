@@ -100,3 +100,6 @@ $string['missingidandcmid'] = 'Missing course module ID and missing module insta
 $string['search'] = 'Search';
 
 $string['waitingforresponse'] = 'Waiting for server response';
+$string['searchresults'] = 'Search Results';
+$string['searcherror'] = 'Error encountered while processing your search';
+$string['selectlessons'] = 'Select the lessons you want to include in your "MyLearning"';

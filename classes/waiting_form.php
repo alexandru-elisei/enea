@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File containing the waiting form.
+ * File containing the page displayed while waiting for a server response.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
@@ -42,7 +42,7 @@ class mod_enea_waiting_form extends moodleform {
         $mform = $this->_form;
 
         $mform->addElement('html', '</br>');
-        $mform->addElement('html', '<h5 id="mod_enea_form_heading_0">' .get_string('waitingforresponse', 'mod_enea').'</h5>');
+        $mform->addElement('html', '<h5 id="mod_enea_form_heading_1">' .get_string('waitingforresponse', 'mod_enea').'</h5>');
         $mform->addElement('html', '</br>');
 
         $customdata = $this->_customdata;
