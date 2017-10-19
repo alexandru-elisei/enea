@@ -36,7 +36,7 @@ $string['modulename_help'] = 'Activity to select courses a user wishes to follow
 $string['pluginadministration'] = 'ENeA Administration';
 $string['nonewmodules'] = 'No new modules';
 
-$string['chooseoptions'] = 'Choose from the options listed below to generate a module you would like to take.';
+$string['chooseoptions'] = 'Please choose from the options listed below to generate a module you would like to take.';
 
 $string['fieldofexpertise'] = 'a) Field of Expertise';
 $string['foehelp'] = 'Field of Expertise';
@@ -102,4 +102,9 @@ $string['search'] = 'Search';
 $string['waitingforresponse'] = 'Waiting for server response';
 $string['searchresults'] = 'Search Results';
 $string['searcherror'] = 'Error encountered while processing your search';
-$string['selectlessons'] = 'Select the lessons you want to include in your "MyLearning"';
+$string['selectlessons'] = 'Please select the lessons you want to include in your "MyLearning".';
+$string['prerequisites'] = 'Prerequisites';
+$string['title'] = 'Title';
+$string['time'] = 'Time';
+$string['recommendedlessons'] = 'Recommended lessons';
+$string['followuplessons'] = 'Follow-up lessons';

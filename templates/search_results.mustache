@@ -1,0 +1,72 @@
+{{!
+    @template mod_enea/search_results
+}}
+
+<br>
+<h3 class="text">{{# str}} searchresults, mod_enea {{/ str}}</h3>
+<br>
+<p class="text-left"> {{# str}} selectlessons, mod_enea {{/ str}}</p>
+
+<form id="search-results-form">
+    <br>
+    <div class="form-row text-left lead">
+        <dt><u>{{# str}} prerequisites, mod_enea {{/ str}}</u></dt>
+    </div>
+
+    {{< mod_enea/course_list_heading}}
+    {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
+    {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
+    {{/ mod_enea/course_list_heading}}
+
+    {{# prerequisites}}
+    {{< mod_enea/course_list_row}}
+    {{$ course_title}}  {{ title }} {{/ course_title}}
+    {{$ course_link}}   {{ link }}  {{/ course_link}}
+    {{$ course_time}}   {{ time }}  {{/ course_time}}
+    {{/ mod_enea/course_list_row}}
+    {{/ prerequisites}}
+
+    <br>
+    <br>
+    <div class="form-row text-left lead">
+        <dt><u>{{# str}} recommendedlessons, mod_enea {{/ str}}</u></dt>
+    </div>
+
+    {{< mod_enea/course_list_heading}}
+    {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
+    {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
+    {{/ mod_enea/course_list_heading}}
+
+    {{# recommendedlessons}}
+    {{< mod_enea/course_list_row}}
+    {{$ course_title}}  {{ title }} {{/ course_title}}
+    {{$ course_link}}   {{ link }}  {{/ course_link}}
+    {{$ course_time}}   {{ time }}  {{/ course_time}}
+    {{/ mod_enea/course_list_row}}
+    {{/ recommendedlessons}}
+
+    <br>
+    <br>
+    <div class="form-row text-left lead">
+        <dt><u>{{# str}} followuplessons, mod_enea {{/ str}}</u></dt>
+    </div>
+
+    {{< mod_enea/course_list_heading}}
+    {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
+    {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
+    {{/ mod_enea/course_list_heading}}
+
+    {{# followuplessons}}
+    {{< mod_enea/course_list_row}}
+    {{$ course_title}}  {{ title }} {{/ course_title}}
+    {{$ course_link}}   {{ link }}  {{/ course_link}}
+    {{$ course_time}}   {{ time }}  {{/ course_time}}
+    {{/ mod_enea/course_list_row}}
+    {{/ followuplessons}}
+
+    <br>
+    <div class="form-row input-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="cancel" class="btn btn-primary">Cancel</button>
+    </div>
+</form>

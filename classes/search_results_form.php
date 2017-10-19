@@ -45,7 +45,7 @@ class mod_enea_search_results_form extends moodleform {
         $searchresults = $customdata['searchresults'];
 
         $mform->addElement('html', '</br>');
-        $mform->addElement('html', '<h4 id="mod_enea_form_heading_2">'.get_string('searchresults', 'mod_enea').'</h4>');
+        $mform->addElement('html', '<h3 class="text" id="mod_enea_form_heading_2">'.get_string('searchresults', 'mod_enea').'</h3>');
         $mform->addElement('html', '</br>');
 
         if (!$searchresults['success']) {
@@ -96,6 +96,11 @@ class mod_enea_search_results_form extends moodleform {
         //$objs[] = $mform->createElement('html', '<div class="col-xs-2">Time</div>');
         //$mform->addElement('group', 'typesthemesgroup', '', $objs, array(''), false);
         //$mform->addElement('html', html_writer::end_tag('div'));
+        //
+        $mform->addElement('html', '<div class="row">');
+        $mform->addElement('html', '<div class="text text-center lead align-self-center col-xs-8 col-md-4 col-lg-4"><dt>Prerequisites</dt></div>');
+        $mform->addElement('html', '</div>');
+        //$mform->addElement('html', '<br>');
 
         $mform->addElement('html', '<div class="row">');
         $mform->addElement('html', '<div class="col-xs-4 col-md-2 col-lg-2"><dt><u>Title</u></dt></div>');

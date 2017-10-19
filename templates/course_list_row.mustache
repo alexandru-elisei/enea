@@ -1,0 +1,21 @@
+{{!
+    @template mod_enea/course_list_row
+}}
+
+<course_list_row>
+<div class="row">
+    <div class="cols-xs-5 col-md-3 col-lg-3">
+        <span class="text-left">
+            <label class="no-bottom-margin form-check-label custom-control custom-checkbox">
+                <input type="checkbox" class="form-check-input">
+                    <a class="link" href="{{$ course_link }}{{/ course_link}}">
+                        {{$ course_title}}{{/ course_title}}
+                    </a>
+            </label>
+        </span>
+    </div>
+    <div class="cols-xs-4 col-md-2 col-lg-2">
+        <span class="text-left">{{$ course_time}}{{/ course_time}}</span>
+    </div>
+</div>
+<course_list_row>

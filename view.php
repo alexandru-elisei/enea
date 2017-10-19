@@ -178,5 +178,65 @@ if ($stage == 0) {
 */
 
 echo $OUTPUT->header();
-$mform->display();
+
+use stdClass;
+
+$data = new stdClass();
+$data->prerequisites = array();
+$course = new stdClass();
+$course->title = 'Title 1';
+$course->link = 'http://www.ddg.gg';
+$course->time = '3h20m';
+$data->prerequisites[] = $course;
+$course = new stdClass();
+$course->title = 'Title 2';
+$course->link = 'http://www.ddg.gg';
+$course->time = '20m';
+$data->prerequisites[] = $course;
+
+$data->recommendedlessons = array();
+$course = new stdClass();
+$course->title = 'Recommended 1';
+$course->link = 'http://www.ddg.gg';
+$course->time = '3m';
+$data->recommendedlessons[] = $course;
+
+$data->followuplessons = array();
+$course = new stdClass();
+$course->title = 'Follow-up 1';
+$course->link = 'http://www.ddg.gg';
+$course->time = '2h';
+$data->followuplessons[] = $course;
+
+echo $OUTPUT->render_from_template('mod_enea/search_results', $data);
+
+/*
+
+$data->heading = get_string('searchresults', 'mod_enea');
+$data->heading_type = 'h3';
+$results = new \mod_enea\output\results_renderer($data);
+echo $OUTPUT->render_from_template('mod_enea/heading', $results->export_for_template($OUTPUT));
+
+$data = new stdClass();
+$data->heading = get_string('selectlessons', 'mod_enea').'.';
+$data->heading_type = 'h6';
+$results = new \mod_enea\output\results_renderer($data);
+echo $OUTPUT->render_from_template('mod_enea/heading', $results->export_for_template($OUTPUT));
+
+$data = new stdClass();
+$data->courses = array();
+$course = new stdClass();
+$course->title = 'Title 1';
+$course->time = '3h20m';
+$data->courses[] = $course;
+$course = new stdClass();
+$course->title = 'Title 2';
+$course->time = '20m';
+$data->courses[] = $course;
+
+$results = new \mod_enea\output\results_renderer($data);
+echo $OUTPUT->render_from_template('mod_enea/course_list', $results->export_for_template($OUTPUT));
+ */
+
+//$mform->display();
 echo $OUTPUT->footer();
