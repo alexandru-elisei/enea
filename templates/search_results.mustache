@@ -100,6 +100,14 @@
                 }
             });
             {{/ dependencies}}
+
+            $('#search-results-form').on('reset', function() {
+                setTimeout(function() {
+                    {{# dependencies}}
+                    $("[name='{{depname}}']").prop('disabled', true);
+                    {{/ dependencies}}
+                });
+            });
         });
     });
 {{/ js}}

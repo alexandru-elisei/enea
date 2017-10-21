@@ -223,6 +223,8 @@ if (isset($customdata['id'])) {
 } else {
     $data->cmid = $customdata['cmid'];
 }
+//print_r($_POST);
+//print_r($_GET);
 echo $OUTPUT->render_from_template('mod_enea/search_results', $data);
 
 /*
