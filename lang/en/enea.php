@@ -108,3 +108,4 @@ $string['title'] = 'Title';
 $string['time'] = 'Time';
 $string['recommendedlessons'] = 'Recommended lessons';
 $string['followuplessons'] = 'Follow-up lessons';
+$string['finish'] = 'Finish';
