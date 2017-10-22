@@ -62,62 +62,17 @@ if ($id) {
 
 $searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":1200,"prerequisites":[],"postrequisites":[]}],"success":true,"errorMsg":""}';
 $searchresults = json_decode($searchresults, true);
-
-$customdata['searchresults'] = $searchresults;
-$mform = new mod_enea_search_results_form(null, $customdata);
-
-for ($i = 0; $i < 10; $i++) {print('<br/>');} print_r($searchresults);
-$courses = $searchresults['data'];
-$prereqnames = [];
-$postreqnames = [];
-foreach ($courses as $course) {
-    if (!empty($course['prerequisites'])) {
-        foreach ($course['prerequisites'] as $coursename)
-            $prereqnames[$coursename] = true;
-    }
-    if (!empty($course['postrequisites'])) {
-        foreach ($course['postrequisites'] as $coursename)
-            $postreqnames[$coursename] = true;
-    }
+if (!isset($searchresults['recommended'])) {
+    // Throw error here.
+}
+if (!isset($searchresults['data'])) {
+    // Throw error here.
+}
+if (!$searchresults['success']) {
+    // Throw error here.
 }
 
-$recommended = [];
-$prereq = [];
-$postreq = [];
-foreach ($courses as $course) {
-    if (isset($prereqnames[$course['title']])) {
-        unset($prereqnames[$course['title']]);
-        $prereq[] = $course;
-    } else if (isset($postreqnames[$course['title']])) {
-        unset($postreqnames[$course['title']]);
-        $postreq[] = $course;
-    } else {
-        $recommended[] = $course;
-    }
-}
-
-if (!empty($prereqnames)) {
-    // Throw error here
-}
-if (!empty($postreqnames)) {
-    // Throw error here
-}
-
-print('<br/>');
-print('<br/>');
-print("prereq: ");
-print_r($prereq);
-
-print('<br/>');
-print('<br/>');
-print("postreq: ");
-print_r($postreq);
-
-print('<br/>');
-print('<br/>');
-print("recommended: ");
-print_r($recommended);
-
+/*
 usort($recommended,
       function ($a, $b) {
           if ($a['similarityScore'] == $b['similarityScore'])
@@ -128,6 +83,8 @@ print('<br/>');
 print('<br/>');
 print("recommended: ");
 print_r($recommended);
+ */
+
 /*
 if ($stage == 0) {
     $waiting = $DB->get_record('enea', array('id' => $cm->instance), 'waitingresponse', MUST_EXIST);
@@ -215,7 +172,7 @@ $data->followuplessons[] = $course;
 $data->dependencies = array();
 $dep = new stdClass();
 $dep->depname = 'Title_1';
-$dep->depon = 'Title_2';
+$dep->deps = array('Title_2', 'Recommended_1');
 $data->dependencies[] = $dep;
 
 if (isset($customdata['id'])) {

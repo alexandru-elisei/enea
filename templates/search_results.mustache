@@ -91,20 +91,35 @@
     require(['jquery'], function($) {
         $('document').ready(function() {
             {{# dependencies}}
-            $("[name='{{depname}}']").prop('disabled', true);
-            $("[name='{{depon}}']").change(function() {
+            $("[name='{{ depname }}']").prop('disabled', true);
+
+            {{# deps }}
+            $("[name='{{ . }}']").change(function() {
                 if (this.checked) {
-                    $("[name='{{depname}}']").prop('disabled', false);
+                    var all_deps_checked = true;
+
+                    {{# deps}}
+                    if (!$("[name='{{ . }}'").prop('checked')) {
+                        all_deps_checked = false;
+                    }
+                    {{/ deps}}
+
+                    if (all_deps_checked) {
+                        $("[name='{{ depname }}']").prop('disabled', false);
+                    } else {
+                        $("[name='{{ depname }}']").prop('disabled', true);
+                    }
                 } else {
-                    $("[name='{{depname}}']").prop('disabled', true);
+                    $("[name='{{ depname }}']").prop('disabled', true);
                 }
             });
+            {{/ deps }}
             {{/ dependencies}}
 
             $('#search-results-form').on('reset', function() {
                 setTimeout(function() {
                     {{# dependencies}}
-                    $("[name='{{depname}}']").prop('disabled', true);
+                    $("[name='{{ depname }}']").prop('disabled', true);
                     {{/ dependencies}}
                 });
             });
