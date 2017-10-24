@@ -43,6 +43,7 @@ class results implements templatable, renderable {
     protected $data;
 
     public function __construct($searchresults) {
+        $searchresults = (array)$searchresults;
         $recommendedtitles = array();
         foreach ($searchresults['recommended'] as $coursetitle) {
             $recommendedtitles[$coursetitle] = true;
@@ -51,40 +52,67 @@ class results implements templatable, renderable {
         $prereqtitles = array();
         $postreqtitles = array();
         $dependencies = array();
-        foreach($searchresults['data'] as $course) {
-            if (isset($recomendedtitles[$course['title']])) {
-                foreach ($course['prerequisites'] as $prereqtitle) {
-                    $prereqtitles[$prereqtitle] = true;
+        $coursedeps = array();
+        foreach($searchresults['data'] as $key => $course) {
+
+            // The 'name' field will identify the checkbox associated with the
+            // course.
+            $name = str_replace(' ', '_', $course['title']);
+            $searchresults['data'][$key]['name'] = $name;
+
+            $searchresults['data'][$key]['time'] = $this->timestr($course['time']);
+
+            if (!empty($course['prerequisites'])) {
+                // Mark the dependency.
+                if (!isset($coursedeps[$course['title']])) {
+                    $coursedeps[$course['title']] = array();
                 }
-                foreach ($course['postrequisites'] as $postreqtitle) {
-                    $postreqtitles[$postreqtitle] = true;
-                }
-            } else {
+                $coursedeps[$course['title']] = array_merge(
+                    $coursedeps[$course['title']],
+                    $course['prerequisites']
+                );
+
                 foreach ($course['prerequisites'] as $prereqtitle) {
                     if (!isset($recommendedtitles[$prereqtitle])) {
-                        // Prerequisite for a postrequisite.
                         $prereqtitles[$prereqtitle] = true;
                     }
                 }
-                foreach ($course['postrequisites'] as $postreqtitle) {
-                    if (!isset($recommendedtitles[$postreqtitle])) {
-                        // Postrequisite for a prerequisite.
-                        $postreqtitles[$postreqtitle] = true;
-                    }
+            }
+
+            foreach ($course['postrequisites'] as $postreqtitle) {
+                // The postrequisite course will depend on the current course.
+                if (!isset($coursedeps[$postreqtitle])) {
+                    $coursedeps[$postreqtitle] = array();
                 }
+                $coursedeps[$postreqtitle][] = $course['title'];
+
+                $postreqtitles[$postreqtitle] = true;
             }
         }
+
+        print('<br>');
+        print('<br>');
+        print_r($coursedeps);
+        print('<br>');
+        print('<br>');
 
         $data = new stdClass();
         $data->recommended = array();
         $data->prereq = array();
         $data->postreq = array();
+        //$data->dependencies = $dependencies;
         $data->dependencies = array();
         foreach ($searchresults['data'] as $course) {
-            if (isset($recomendedtitles[$course['title']])) {
+            if (isset($recommendedtitles[$course['title']])) {
                 $data->recommended[] = $course;
+            } else if (isset($prereqtitles[$course['title']])) {
+                $data->prereq[] = $course;
+            } else if (isset($postreqtitles[$course['title']])) {
+                $data->postreq[] = $course;
             }
         }
+
+        $this->data = $data;
     }
 
     /**
@@ -95,5 +123,38 @@ class results implements templatable, renderable {
      */
     public function export_for_template(renderer_base $output) {
         return $this->data;
+    }
+
+    /**
+     * Convert the time into a human-readable format.
+     *
+     * @param int $time The duration, in seconds.
+     * @return str The human-readable time.
+     */
+    protected function timestr($time) {
+        $ret = '';
+        $days = floor($time / 86400);
+        if ($days > 0) {
+            $ret = $ret.$days.'d';
+        }
+
+        $time = $time % 86400;
+        $hours = floor($time / 3600);
+        if ($hours) {
+            $ret = $ret.$hours.'h';
+        }
+
+        $time = $time % 3600;
+        $minutes = floor($time / 60);
+        if ($minutes) {
+            $ret = $ret.$minutes.'m';
+        }
+
+        $seconds = $time % 60;
+        if ($seconds or !$ret) {
+            $ret = $ret.$seconds.'s';
+        }
+
+        return $ret;
     }
 }

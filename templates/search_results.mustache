@@ -18,14 +18,14 @@
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
     {{/ mod_enea/course_list_heading}}
 
-    {{# prerequisites}}
+    {{# prereq}}
     {{< mod_enea/course_list_row}}
     {{$ elt_name}}{{ name }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
-    {{/ prerequisites}}
+    {{/ prereq}}
 
     <br>
     <br>
@@ -38,14 +38,14 @@
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
     {{/ mod_enea/course_list_heading}}
 
-    {{# recommendedlessons}}
+    {{# recommended}}
     {{< mod_enea/course_list_row}}
     {{$ elt_name}}{{ name }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
-    {{/ recommendedlessons}}
+    {{/ recommended}}
 
     <br>
     <br>
@@ -58,14 +58,14 @@
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
     {{/ mod_enea/course_list_heading}}
 
-    {{# followuplessons}}
+    {{# postreq}}
     {{< mod_enea/course_list_row}}
     {{$ elt_name}}{{ name }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
-    {{/ followuplessons}}
+    {{/ postreq}}
 
     <div style="display: none">
     {{# cmid}}
@@ -99,7 +99,7 @@
                     var all_deps_checked = true;
 
                     {{# deps}}
-                    if (!$("[name='{{ . }}'").prop('checked')) {
+                    if (!$("[name='{{ . }}'").prop('checked') || $("[name='{{ .  }}'").prop('disabled')) {
                         all_deps_checked = false;
                     }
                     {{/ deps}}

@@ -60,7 +60,14 @@ if ($id) {
     $customdata = array('cmid' => $e);
 }
 
-$searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":1200,"prerequisites":[],"postrequisites":[]}],"success":true,"errorMsg":""}';
+$searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print("searchresults: ");
+print_r($searchresults);
+
 $searchresults = json_decode($searchresults, true);
 if (!isset($searchresults['recommended'])) {
     // Throw error here.
@@ -79,11 +86,13 @@ usort($recommended,
               return 0;
           return ($a['similarityScore'] > $b['similarityScore']) ? -1 : 1;
       });
-print('<br/>');
-print('<br/>');
-print("recommended: ");
-print_r($recommended);
  */
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print("searchresults: ");
+print_r($searchresults);
 
 /*
 if ($stage == 0) {
@@ -182,7 +191,15 @@ if (isset($customdata['id'])) {
 }
 //print_r($_POST);
 //print_r($_GET);
-echo $OUTPUT->render_from_template('mod_enea/search_results', $data);
+$results = new \mod_enea\output\results($searchresults);
+
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print('<br/>');
+print("results: ");
+print_r($results->export_for_template($OUTPUT));
+echo $OUTPUT->render_from_template('mod_enea/search_results', $results->export_for_template($OUTPUT));
 
 /*
 $mform = new mod_enea_selection_form(null, $customdata);
