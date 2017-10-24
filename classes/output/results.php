@@ -90,18 +90,10 @@ class results implements templatable, renderable {
             }
         }
 
-        print('<br>');
-        print('<br>');
-        print_r($coursedeps);
-        print('<br>');
-        print('<br>');
-
         $data = new stdClass();
         $data->recommended = array();
         $data->prereq = array();
         $data->postreq = array();
-        //$data->dependencies = $dependencies;
-        $data->dependencies = array();
         foreach ($searchresults['data'] as $course) {
             if (isset($recommendedtitles[$course['title']])) {
                 $data->recommended[] = $course;
@@ -112,7 +104,45 @@ class results implements templatable, renderable {
             }
         }
 
+        $data->dependencies = array();
+        foreach ($coursedeps as $title => $_) {
+            $visited = array();
+            $data->dependencies[] = array(
+                'depname' => str_replace(' ', '_', $title),
+                'deps' => $this->get_all_deps($title, $coursedeps, $visited)
+            );
+        }
+
+        $data->dependencies = json_encode($data->dependencies);
+
         $this->data = $data;
+
+        print('<br>');
+        print_r($data->dependencies);
+        print('<br>');
+    }
+
+    /**
+     * Get all the dependencies, iregardless of depth, for a course.
+     *
+     * @param str $title The course title.
+     * @param array $coursedeps All the dependencies.
+     * @param array $visited List of the visited courses in the tranversal.
+     * @return array Numerically indexed list of all the dependencies.
+     */
+    protected function get_all_deps($title, $coursedeps, $visited) {
+        $ret = array();
+        if (isset($coursedeps[$title])) {
+            foreach ($coursedeps[$title] as $deptitle) {
+                if (!isset($visited[$deptitle])) {
+                    $visited[$deptitle] = true;
+                    $ret[] = str_replace(' ', '_', $deptitle);
+                    $ret = array_merge($ret, $this->get_all_deps($deptitle, $coursedeps, $visited));
+                }
+            }
+        }
+
+        return $ret;
     }
 
     /**
