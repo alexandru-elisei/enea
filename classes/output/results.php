@@ -184,7 +184,7 @@ class results implements templatable, renderable {
 
         $time = $time % 86400;
         $hours = floor($time / 3600);
-        if ($hours) {
+        if ($hours or $ret) {
             $ret = $ret.$hours.'h';
         }
 
