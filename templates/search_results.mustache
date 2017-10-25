@@ -75,7 +75,8 @@
     <input name="id" type="hidden" value="{{ . }}">
     {{/ id}}
     <input name="stage" type="hidden" value="2">
-    <input name="dependencies_json" type="hidden" value="{{ dependencies }}">
+    <input name="directdeps" type="hidden" value="{{ directdeps }}">
+    <input name="reversedeps" type="hidden" value="{{ reversedeps }}">
     </div>
 
     <br>
@@ -91,14 +92,52 @@
 {{# js}}
     require(['jquery'], function($) {
         $('document').ready(function() {
-            var dependencies = JSON.parse($('[name="dependencies_json"]').val());
-            $.each(dependencies, function(_, dependency) {
-                $("[name='" + dependency.depname + "']").prop('disabled', true);
+            var directdeps = JSON.parse($('[name="directdeps"]').val());
+            var reversedeps = JSON.parse($('[name="reversedeps"]').val());
+
+            // When loading the document, disable all the courses that have a
+            // dependency because there are no checked checkboxes on the page.
+            $.each(directdeps, function(name, deps) {
+                $("[name='" + name + "']").prop('disabled', true);
             });
+
+            // For each course 'name' that has courses that depend on it check if
+            // the courses that depend on it can be enabled when 'name' is
+            // checked.
+            $.each(reversedeps, function(name, revdeps) {
+                $("[name='" + name + "']").change(function() {
+                    if (!this.checked) {
+                        // If 'name' is unchecked then disable all the courses
+                        // that depend on it.
+                        $.each(revdeps, function(_, revdep) {
+                            $("[name='" + revdep + "']").prop('disabled', true);
+                        });
+                    } else {
+                        // For each course that depends on 'name' check that all
+                        // of their dependencies are enabled and checked and
+                        // enable them.
+                        $.each(revdeps, function(_, revdep) {
+                            to_enable = true;
+                            $.each(directdeps[revdep], function(_, dirdep) {
+                                if (!$("[name='" + dirdep + "']").prop('checked') ||
+                                         $("[name='" + dirdep + "']").prop('disabled')) {
+                                    to_enable = false;
+                                }
+                            });
+                            if (to_enable == true) {
+                                $("[name='" + revdep + "']").prop('disabled', false);
+                            } else {
+                                $("[name='" + revdep + "']").prop('disabled', true);
+                            }
+                        });
+                    }
+                });
+            });
+
             $('#search-results-form').on('reset', function() {
                 setTimeout(function() {
-                    $.each(dependencies, function(_, dependency) {
-                        $("[name='" + dependency.depname + "']").prop('disabled', true);
+                    $.each(directdeps, function(name, deps) {
+                        $("[name='" + name + "']").prop('disabled', true);
                     });
                 });
             });

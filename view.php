@@ -61,13 +61,6 @@ if ($id) {
 }
 
 $searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print("searchresults: ");
-print_r($searchresults);
-
 $searchresults = json_decode($searchresults, true);
 if (!isset($searchresults['recommended'])) {
     // Throw error here.
@@ -79,110 +72,7 @@ if (!$searchresults['success']) {
     // Throw error here.
 }
 
-/*
-usort($recommended,
-      function ($a, $b) {
-          if ($a['similarityScore'] == $b['similarityScore'])
-              return 0;
-          return ($a['similarityScore'] > $b['similarityScore']) ? -1 : 1;
-      });
- */
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print("searchresults: ");
-print_r($searchresults);
-
-/*
-if ($stage == 0) {
-    $waiting = $DB->get_record('enea', array('id' => $cm->instance), 'waitingresponse', MUST_EXIST);
-    $waiting = $waiting->waitingresponse;
-    if ($waiting) {
-        $mform = new mod_enea_waiting_form(null, $customdata);
-        $PAGE->set_periodic_refresh_delay(30);
-    } else {
-        $mform = new mod_enea_selection_form(null, $customdata);
-        $formdata = $mform->get_data();
-        if (!empty($formdata)) {
-            $selection = $mform->get_selection($formdata);
-
-            // TODO: delete me
-            for ($i = 0; $i < 10; $i++) {print('<br/>');} print_r(json_encode($selection));
-
-            $task = new \mod_enea\task\get_courses();
-            $taskargs = array();
-            $taskargs['id'] = $cm->instance;
-            $taskargs['selection'] = $selection;
-            $task->set_custom_data($taskargs);
-            $DB->set_field('enea', 'waitingresponse', 1, array('id' => $cm->instance));
-            \core\task\manager::queue_adhoc_task($task);
-
-            $mform = new mod_enea_waiting_form(null, $customdata);
-            $PAGE->set_periodic_refresh_delay(30);
-        }
-    }
-} else if ($stage == 1) {
-    $waiting = $DB->get_record('enea', array('id' => $cm->instance), 'waitingresponse', MUST_EXIST);
-    $waiting = $waiting->waitingresponse;
-    if (!$waiting) {
-        $PAGE->set_periodic_refresh_delay(0);
-        $courses = $DB->get_record('enea', array('id' => $cm->instance), 'selectedcourses', MUST_EXIST);
-        $DB->set_field('enea', 'selectedcourses', '', array('id' => $cm->instance));
-        $mform = new mod_enea_selection_form(null, $customdata);
-
-        for ($i = 0; $i < 10; $i++) {
-            print('<br/>');
-        }
-        print($courses);
-
-    } else {
-        $mform = new mod_enea_waiting_form(null, $customdata);
-        $PAGE->set_periodic_refresh_delay(30);
-    }
-}
-*/
-
 echo $OUTPUT->header();
-
-use stdClass;
-$data = new stdClass();
-$data->prerequisites = array();
-$course = new stdClass();
-$course->title = 'Title 1';
-$course->name = str_replace(' ', '_', $course->title);
-$course->link = 'http://www.ddg.gg';
-$course->time = '3h20m';
-$data->prerequisites[] = $course;
-
-$course = new stdClass();
-$course->title = 'Title 2';
-$course->name = str_replace(' ', '_', $course->title);
-$course->link = 'http://www.ddg.gg';
-$course->time = '20m';
-$data->prerequisites[] = $course;
-
-$data->recommendedlessons = array();
-$course = new stdClass();
-$course->title = 'Recommended 1';
-$course->name = str_replace(' ', '_', $course->title);
-$course->link = 'http://www.ddg.gg';
-$course->time = '3m';
-$data->recommendedlessons[] = $course;
-
-$data->followuplessons = array();
-$course = new stdClass();
-$course->title = 'Follow-up 1';
-$course->name = str_replace(' ', '_', $course->title);
-$course->link = 'http://www.ddg.gg';
-$course->time = '2h';
-$data->followuplessons[] = $course;
-
-$data->dependencies = array();
-$dep = new stdClass();
-$dep->depname = 'Title_1';
-$dep->deps = array('Title_2', 'Recommended_1');
-$data->dependencies[] = $dep;
 
 if (isset($customdata['id'])) {
     $data->id = $customdata['id'];
@@ -192,17 +82,6 @@ if (isset($customdata['id'])) {
 //print_r($_POST);
 //print_r($_GET);
 $results = new \mod_enea\output\results($searchresults);
-
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print('<br/>');
-print("results: ");
-print_r($results->export_for_template($OUTPUT));
 echo $OUTPUT->render_from_template('mod_enea/search_results', $results->export_for_template($OUTPUT));
 
-/*
-$mform = new mod_enea_selection_form(null, $customdata);
-$mform->display();
- */
 echo $OUTPUT->footer();

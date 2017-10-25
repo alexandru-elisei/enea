@@ -104,22 +104,29 @@ class results implements templatable, renderable {
             }
         }
 
-        $data->dependencies = array();
+        // Create the list of all direct dependencies.
+        $data->directdeps = array();
         foreach ($coursedeps as $title => $_) {
             $visited = array();
-            $data->dependencies[] = array(
-                'depname' => str_replace(' ', '_', $title),
-                'deps' => $this->get_all_deps($title, $coursedeps, $visited)
-            );
+            $name = str_replace(' ', '_', $title);
+            $data->directdeps[$name] = $this->get_all_deps($title, $coursedeps, $visited);
         }
 
-        $data->dependencies = json_encode($data->dependencies);
+        // Create the list of all reverse dependencies.
+        $data->reversedeps = array();
+        foreach ($data->directdeps as $name => $deps) {
+            foreach ($deps as $depname) {
+                if (!isset($data->reversedeps[$depname])) {
+                    $data->reversedeps[$depname] = array();
+                }
+                $data->reversedeps[$depname][] = $name;
+            }
+        }
+
+        $data->directdeps = json_encode($data->directdeps);
+        $data->reversedeps = json_encode($data->reversedeps);
 
         $this->data = $data;
-
-        print('<br>');
-        print_r($data->dependencies);
-        print('<br>');
     }
 
     /**
