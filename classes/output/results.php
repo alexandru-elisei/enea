@@ -126,6 +126,13 @@ class results implements templatable, renderable {
         $data->directdeps = json_encode($data->directdeps);
         $data->reversedeps = json_encode($data->reversedeps);
 
+        if (!empty($data->prereq)) {
+            $data->has_prereq = true;
+        }
+        if (!empty($data->postreq)) {
+            $data->has_postreq = true;
+        }
+
         $this->data = $data;
     }
 

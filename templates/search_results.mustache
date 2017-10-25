@@ -8,6 +8,7 @@
 <p class="text-left"> {{# str}} selectlessons, mod_enea {{/ str}}</p>
 
 <form id="search-results-form">
+    {{# has_prereq}}
     <br>
     <div class="form-row text-left lead">
         <dt><u>{{# str}} prerequisites, mod_enea {{/ str}}</u></dt>
@@ -26,8 +27,9 @@
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
     {{/ prereq}}
-
     <br>
+    {{/ has_prereq}}
+
     <br>
     <div class="form-row text-left lead">
         <dt><u>{{# str}} recommendedlessons, mod_enea {{/ str}}</u></dt>
@@ -47,6 +49,7 @@
     {{/ mod_enea/course_list_row}}
     {{/ recommended}}
 
+    {{# has_postreq}}
     <br>
     <br>
     <div class="form-row text-left lead">
@@ -66,6 +69,7 @@
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
     {{/ postreq}}
+    {{/ has_postreq}}
 
     <div style="display: none">
     <input name="stage" type="hidden" value="2">
