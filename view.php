@@ -74,11 +74,6 @@ if (!$searchresults['success']) {
 
 echo $OUTPUT->header();
 
-if (isset($customdata['id'])) {
-    $data->id = $customdata['id'];
-} else {
-    $data->cmid = $customdata['cmid'];
-}
 //print_r($_POST);
 //print_r($_GET);
 $results = new \mod_enea\output\results($searchresults);
