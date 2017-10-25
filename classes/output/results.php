@@ -183,9 +183,7 @@ class results implements templatable, renderable {
 
         $time = $time % 3600;
         $minutes = floor($time / 60);
-        if ($minutes) {
-            $ret = $ret.$minutes.'m';
-        }
+        $ret = $ret.$minutes.'m';
 
         $seconds = $time % 60;
         if ($seconds or !$ret) {
