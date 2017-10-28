@@ -1,0 +1,26 @@
+{{!
+    @template mod_enea/error
+}}
+
+<br>
+<h3 class="text">{{# str}} oops, mod_enea {{/ str}}</h3>
+<br>
+
+<p class="text-left">{{# str}} errorprelude, mod_enea {{/ str}} {{ errormsg }}.</p>
+
+<br>
+<form id="search-results-form">
+    <div style="display: none">
+    <input name="stage" type="hidden" value="{{ stage }}">
+    {{# id}}
+    <input name="id" type="hidden" value="{{ id }}">
+    {{/ id}}
+    {{# cmid}}
+    <input name="cmid" type="hidden" value="{{ cmid }}">
+    {{/ cmid}}
+    </div>
+
+    <div class="form-inline felement data-fieldtype="group"">
+        <input class="btn btn-primary" type="submit" name="backbutton" value="{{# str}} back, mod_enea {{/ str}}">
+    </div>
+</form>

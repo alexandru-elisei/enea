@@ -5,6 +5,7 @@
 <br>
 <h3 class="text">{{# str}} searchresults, mod_enea {{/ str}}</h3>
 <br>
+
 <p class="text-left"> {{# str}} selectlessons, mod_enea {{/ str}}</p>
 
 <form id="search-results-form">
@@ -75,6 +76,13 @@
     <input name="stage" type="hidden" value="2">
     <input name="directdeps" type="hidden" value="{{ directdeps }}">
     <input name="reversedeps" type="hidden" value="{{ reversedeps }}">
+    {{# id}}
+    <input name="id" type="hidden" value="{{ id }}">
+    {{/ id}}
+    {{# cmid}}
+    <input name="cmid" type="hidden" value="{{ cmid }}">
+    {{/ cmid}}
+
     </div>
 
     <br>

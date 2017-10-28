@@ -83,23 +83,18 @@ $string['hygiene'] = 'Hygiene';
 $string['preparation'] = 'Preparation';
 $string['bottlefeeding'] = 'Bottle-feeding';
 $string['weaning'] = 'Weaning';
-
 $string['othertopics'] = 'c) Other topics:';
-
 $string['typesthemes'] = 'd) Types/Themes';
 $string['science'] = 'Science';
 $string['guidelines'] = 'Guidelines';
 $string['practice'] = 'Practice';
-
 $string['cmepoints'] = 'e) CME points';
 $string['yes'] = 'Yes';
-
 $string['clear'] = 'Clear';
-
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
 $string['search'] = 'Search';
-
 $string['waitingforresponse'] = 'Waiting for server response';
+
 $string['searchresults'] = 'Search Results';
 $string['searcherror'] = 'Error encountered while processing your search';
 $string['selectlessons'] = 'Please select the lessons you want to include in your "MyLearning".';
@@ -109,3 +104,7 @@ $string['time'] = 'Time';
 $string['recommendedlessons'] = 'Recommended lessons';
 $string['followuplessons'] = 'Follow-up lessons';
 $string['finish'] = 'Finish';
+
+$string['oops'] = 'Oops!';
+$string['errorprelude'] = 'An error occured while precessing your request:';
+$string['back'] = 'Back';

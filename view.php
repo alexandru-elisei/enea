@@ -40,7 +40,7 @@ if ($id) {
     $course         = $DB->get_record('course', array('id' => $moduleinstance->course), '*', MUST_EXIST);
     $cm             = get_coursemodule_from_instance('enea', $moduleinstance->id, $course->id, false, MUST_EXIST);
 } else {
-    print_error(get_string('missingidandcmid', mod_enea));
+    print_error(get_string('missingidandcmid', 'mod_enea'));
 }
 
 require_login($course, true, $cm);
@@ -55,9 +55,9 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
 if ($id) {
-    $customdata = array('id' => $id);
+    $pagecontext = array('id' => $id);
 } else {
-    $customdata = array('cmid' => $e);
+    $pagecontext = array('cmid' => $e);
 }
 
 $searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
@@ -76,7 +76,18 @@ echo $OUTPUT->header();
 
 //print_r($_POST);
 //print_r($_GET);
+$searchresults = array_merge($searchresults, $pagecontext);
 $results = new \mod_enea\output\results($searchresults);
 echo $OUTPUT->render_from_template('mod_enea/search_results', $results->export_for_template($OUTPUT));
+
+/*
+$data = array(
+    'errormsg'  => 'No courses matching your preferences where found',
+    'stage'     => 2
+);
+$data = array_merge($data, $pagecontext);
+$error = new \mod_enea\output\error($data);
+echo $OUTPUT->render_from_template('mod_enea/error', $error->export_for_template($OUTPUT));
+ */
 
 echo $OUTPUT->footer();

@@ -133,6 +133,12 @@ class results implements templatable, renderable {
             $data->has_postreq = true;
         }
 
+        if (isset($searchresults['id'])) {
+            $data->id = $searchresults['id'];
+        } else {
+            $data->cmid = $searchresults['cmid'];
+        }
+
         $this->data = $data;
     }
 
