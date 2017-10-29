@@ -1,12 +1,12 @@
 {{!
-    @template mod_enea/error
+    @template mod_enea/waiting
 }}
 
 <br>
-<h3 class="text">{{# str}} oops, mod_enea {{/ str}}</h3>
+<h3 class="text">{{# str}} waitinghdr, mod_enea {{/ str}}</h3>
 <br>
 
-<p class="text-left">{{# str}} errorprelude, mod_enea {{/ str}} {{ errormsg }}.</p>
+<p class="text-left">{{# str}} waitingtext, mod_enea {{/ str}}.</p>
 
 <br>
 <form id="search-results-form">
@@ -21,6 +21,6 @@
     </div>
 
     <div class="form-inline felement data-fieldtype="group"">
-        <input class="btn btn-secondary" type="submit" name="backbutton" value="{{# str}} back, mod_enea {{/ str}}">
+        <input class="btn btn-secondary" type="submit" name="refreshbutton" value="{{# str}} refresh, mod_enea {{/ str}}">
     </div>
 </form>

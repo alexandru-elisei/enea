@@ -93,7 +93,10 @@ $string['yes'] = 'Yes';
 $string['clear'] = 'Clear';
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
 $string['search'] = 'Search';
-$string['waitingforresponse'] = 'Waiting for server response';
+
+$string['waitinghdr'] = 'Processing your query';
+$string['waitingtext'] = 'Please wait while we search for courses matching your criteria. You will be automatically redirected when the results are ready';
+$string['refresh'] = 'Refresh';
 
 $string['searchresults'] = 'Search Results';
 $string['searcherror'] = 'Error encountered while processing your search';

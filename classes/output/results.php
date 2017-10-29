@@ -42,7 +42,7 @@ class results implements templatable, renderable {
 
     protected $data;
 
-    public function __construct($searchresults) {
+    public function __construct($searchresults, $stage) {
         $searchresults = (array)$searchresults;
         $recommendedtitles = array();
         foreach ($searchresults['recommended'] as $coursetitle) {
@@ -138,6 +138,7 @@ class results implements templatable, renderable {
         } else {
             $data->cmid = $searchresults['cmid'];
         }
+        $data->stage = $stage;
 
         $this->data = $data;
     }

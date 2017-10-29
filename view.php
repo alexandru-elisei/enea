@@ -76,18 +76,18 @@ echo $OUTPUT->header();
 
 //print_r($_POST);
 //print_r($_GET);
+/*
 $searchresults = array_merge($searchresults, $pagecontext);
-$results = new \mod_enea\output\results($searchresults);
+$results = new \mod_enea\output\results($searchresults, $stage);
 echo $OUTPUT->render_from_template('mod_enea/search_results', $results->export_for_template($OUTPUT));
 
-/*
-$data = array(
-    'errormsg'  => 'No courses matching your preferences where found',
-    'stage'     => 2
-);
+$data = array('errormsg'  => 'No courses matching your preferences were found');
 $data = array_merge($data, $pagecontext);
-$error = new \mod_enea\output\error($data);
+$error = new \mod_enea\output\error($data, $stage);
 echo $OUTPUT->render_from_template('mod_enea/error', $error->export_for_template($OUTPUT));
  */
+
+$waiting = new \mod_enea\output\error($pagecontext, $stage);
+echo $OUTPUT->render_from_template('mod_enea/waiting', $waiting->export_for_template($OUTPUT));
 
 echo $OUTPUT->footer();

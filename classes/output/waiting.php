@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderable for displaying the error page.
+ * Renderable for displaying the waiting for results page.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
@@ -32,13 +32,13 @@ use templatable;
 use stdClass;
 
 /**
- * Error renderable.
+ * Waiting for query results renderable.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class error implements templatable, renderable {
+class waiting implements templatable, renderable {
 
     protected $data;
 
