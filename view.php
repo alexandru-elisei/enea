@@ -22,8 +22,13 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use \mod_enea\local\stage;
+use \mod_enea\local\helper;
+
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
+
+const REFRESH_TIME = 3600;
 
 // Course module id, or
 $id = optional_param('id', 0, PARAM_INT);
@@ -45,8 +50,9 @@ if ($id) {
 
 require_login($course, true, $cm);
 
-$stage = optional_param('hidden', 0, PARAM_INT);
-
+$stage = optional_param('hidden', stage::SELECT_KEYWORDS, PARAM_INT);
+$userid = $USER->id;
+$pagecontext = $id ? array('id' => $id) : array('cmid' => $e);
 $modulecontext = context_module::instance($cm->id);
 
 $PAGE->set_url('/mod/enea/view.php', array('id' => $cm->id));
@@ -54,23 +60,124 @@ $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
-if ($id) {
-    $pagecontext = array('id' => $id);
-} else {
-    $pagecontext = array('cmid' => $e);
+function print_deb($stuff) {
+    print('<br>');
+    print('<br>');
+    print('<br>');
+    print_r($stuff);
+    print('<br>');
 }
 
-$searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
-$searchresults = json_decode($searchresults, true);
-if (!isset($searchresults['recommended'])) {
-    // Throw error here.
+/*
+$userexists = $DB->get_record('enea_users', array('userid' => $userid), 'userid', IGNORE_MISSING);
+if (!$userexists) {
+    print('<br>');
+    print('<br>');
+    print('<br>');
+    print("user does not exist");
+    $record = new stdClass();
+    $record->userid = $userid;
+    $record->stage = STAGE_WAITING_FOR_RESULTS;
+    $DB->insert_record('enea_users', $record, false);
+} else {
+    print('<br>');
+    print('<br>');
+    print('<br>');
+    print("user exists");
 }
-if (!isset($searchresults['data'])) {
-    // Throw error here.
+ */
+
+$mform = null;
+
+// Workaround for the automatic refresh after we first render the waiting
+// template which makes $stage == SELECT_KEYWORDS.
+if ($stage == stage::SELECT_KEYWORDS) {
+    $dbstage = $DB->get_record('enea_users', array('userid' => $userid), 'stage', IGNORE_MISSING);
+    if ($dbstage and $dbstage->stage == stage::WAITING_FOR_RESULTS) {
+        $stage = stage::WAITING_FOR_RESULTS;
+    }
 }
-if (!$searchresults['success']) {
-    // Throw error here.
+
+print_deb($stage);
+
+if ($stage == stage::SELECT_KEYWORDS) {
+    $formdata = $_POST ? $_POST : $_GET;
+    if (!isset($formdata['searchbutton'])) {
+        $mform = new mod_enea_selection_form(null, $pagecontext);
+    } else {
+        $data = $formdata;
+        $data = array_merge($formdata, $pagecontext);
+        $select = new \mod_enea\output\select($data, stage::SELECT_KEYWORDS);
+
+        $task = new \mod_enea\task\get_courses();
+        $taskargs = array(
+            'userid' => $userid,
+            'keywords' => $select->export_for_server(),
+        );
+        $task->set_custom_data($taskargs);
+
+        $userexists = $DB->get_record('enea_users', array('userid' => $userid), 'userid', IGNORE_MISSING);
+        if (!$userexists) {
+            $record = new stdClass();
+            $record->userid = $userid;
+            $record->stage = stage::WAITING_FOR_RESULTS;
+            $DB->insert_record('enea_users', $record, false);
+        } else {
+            $DB->set_field('enea_users', 'stage', stage::WAITING_FOR_RESULTS, array('userid' => $userid));
+        }
+
+        \core\task\manager::queue_adhoc_task($task);
+
+        $data = $pagecontext;
+        $renderer = new \mod_enea\output\waiting($data, stage::WAITING_FOR_RESULTS);
+        $template = 'mod_enea/waiting';
+        $PAGE->set_periodic_refresh_delay(REFRESH_TIME);
+    }
+} else if ($stage == stage::WAITING_FOR_RESULTS) {
+    $data = $pagecontext;
+    $renderer = new \mod_enea\output\waiting($data, stage::WAITING_FOR_RESULTS);
+    $template = 'mod_enea/waiting';
+    $PAGE->set_periodic_refresh_delay(REFRESH_TIME);
 }
+
+    /*
+    if (false) {
+        $searchresults = $DB->get_record('enea_users', array('userid' => $userid), 'searchresults', MUST_EXIST);
+        //$searchresults = json_decode($searchresults, true);
+        $searchresults=(array)$searchresults;
+        if (!isset($searchresults['recommended'])) {
+            $data = new stdClass();
+            $data->errormsg = get_string('missingrecommended', 'mod_enea');
+            $data = array_merge($data, $pagecontext);
+            $renderer = new \mod_enea\output\error($data, $stage);
+            $template = 'mod_enea/error';
+
+            goto render;
+        }
+        if (!isset($searchresults['data'])) {
+            $data = new stdClass();
+            $data->errormsg = get_string('missingdata', 'mod_enea');
+            $data = array_merge($data, $pagecontext);
+            $renderer = new \mod_enea\output\error($data, $stage);
+            $template = 'mod_enea/error';
+
+            goto render;
+        }
+        if (!$searchresults['success']) {
+            $data = new stdClass();
+            $data->errormsg = $searchresults['errorMsg'];
+            $data = array_merge($data, $pagecontext);
+            $renderer = new \mod_enea\output\error($data, $stage);
+            $template = 'mod_enea/error';
+
+            goto render;
+        }
+
+        $data = array_merge($searchresults, $pagecontext);
+        $renderer = new \mod_enea\output\results($data, $stage);
+        $template = 'mod_enea/search_results';
+    }
+     */
 
 echo $OUTPUT->header();
 
@@ -81,13 +188,14 @@ $searchresults = array_merge($searchresults, $pagecontext);
 $results = new \mod_enea\output\results($searchresults, $stage);
 echo $OUTPUT->render_from_template('mod_enea/search_results', $results->export_for_template($OUTPUT));
 
-$data = array('errormsg'  => 'No courses matching your preferences were found');
-$data = array_merge($data, $pagecontext);
-$error = new \mod_enea\output\error($data, $stage);
 echo $OUTPUT->render_from_template('mod_enea/error', $error->export_for_template($OUTPUT));
  */
 
-$waiting = new \mod_enea\output\error($pagecontext, $stage);
-echo $OUTPUT->render_from_template('mod_enea/waiting', $waiting->export_for_template($OUTPUT));
+render:
+if ($mform) {
+    $mform->display();
+} else {
+    echo $OUTPUT->render_from_template($template, $renderer->export_for_template($OUTPUT));
+}
 
 echo $OUTPUT->footer();

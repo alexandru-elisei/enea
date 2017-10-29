@@ -15,17 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * File containing the course selection stages.
  *
- * @package     mod_enea
- * @copyright   2017 Alexandru Elisei <alexandru.elisei@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_enea
+ * @copyright  2017 Alexandru Elisei
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace mod_enea\local;
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_enea';
-$plugin->release = '0.1.0';
-$plugin->version = 2017092403;
-$plugin->requires = 2016120503;
-$plugin->maturity = MATURITY_ALPHA;
+class stage {
+    const SELECT_KEYWORDS     = 0;
+    const WAITING_FOR_RESULTS = 1;
+    const SELECT_COURSES      = 2;
+    const FINISHED            = 3;
+}
