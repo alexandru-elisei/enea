@@ -28,7 +28,7 @@ use \mod_enea\local\helper;
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
-const REFRESH_TIME = 3600;
+const REFRESH_TIME = 30;
 
 // Course module id, or
 $id = optional_param('id', 0, PARAM_INT);
