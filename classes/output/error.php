@@ -42,9 +42,8 @@ class error implements templatable, renderable {
 
     protected $data;
 
-    public function __construct($data, $stage) {
+    public function __construct($data) {
         $this->data = (object)$data;
-        $this->data->stage = $stage;
     }
 
     /**
