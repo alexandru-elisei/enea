@@ -37,6 +37,7 @@ $string['pluginadministration'] = 'ENeA Administration';
 $string['nonewmodules'] = 'No new modules';
 
 $string['chooseoptions'] = 'Please choose from the options listed below to generate a module you would like to take.';
+$string['selectoptions'] = 'Select Options';
 
 $string['fieldofexpertise'] = 'a) Field of Expertise';
 $string['foehelp'] = 'Field of Expertise';

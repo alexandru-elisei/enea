@@ -90,12 +90,20 @@ if ($stage == stage::FINISHED) {
 }
 
 if ($stage == stage::SELECT_KEYWORDS) {
+
     if (!isset($formdata['searchbutton'])) {
-        $mform = new mod_enea_selection_form(null, $pagecontext);
+        $data = $pagecontext;
+        $renderer = new \mod_enea\output\select($data);
+        $template = 'mod_enea/select';
+
+        //$mform = new mod_enea_selection_form();
+
     } else {
         $data = $formdata;
         $data = array_merge($formdata, $pagecontext);
         $select = new \mod_enea\output\select($data);
+
+        print_deb($formdata);
 
         $task = new \mod_enea\task\get_courses();
         $taskargs = array(

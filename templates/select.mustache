@@ -1,0 +1,74 @@
+{{!
+    @template mod_enea/select
+}}
+
+<br>
+<h3 class="text">{{# str}} selectoptions, mod_enea {{/ str}}</h3>
+<br>
+
+<p class="text-left"> {{# str}} chooseoptions, mod_enea {{/ str}}</p>
+
+<form id="search-results-form">
+    <div class="row">
+        <div class="text-left col-xs-6 col-md-4 col-lg-4">
+            <p id="fieldofexpertise"><dt>{{# str}} fieldofexpertise, mod_enea {{/ str}}</dt></p>
+        </div>
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}medicine{{/ option_name}}
+    {{$ option_text}}{{# str}} medicine, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div class="collapse-group">
+        <div name="medicinedeps" style="display:none">
+            {{< mod_enea/select_indent_row}}
+            {{$ option_name}}medicine{{/ option_name}}
+            {{$ option_text}}{{# str}} medicine, mod_enea {{/ str}}{{/ option_text}}
+            {{/ mod_enea/select_indent_row}}
+        </div>
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}nursing{{/ option_name}}
+    {{$ option_text}}{{# str}} nursing, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}nutrition{{/ option_name}}
+    {{$ option_text}}{{# str}} nutrition, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <br>
+    <div class="row">
+        <div class="text-left col-xs-6 col-md-4 col-lg-4">
+            <p id="topics"><dt>{{# str}} topics, mod_enea {{/ str}}</dt></p>
+        </div>
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}breastfeeding{{/ option_name}}
+    {{$ option_text}}{{# str}} breastfeeding, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div style="display: none">
+    {{# id}}
+    <input name="id" type="hidden" value="{{ id }}">
+    {{/ id}}
+    {{# cmid}}
+    <input name="cmid" type="hidden" value="{{ cmid }}">
+    {{/ cmid}}
+    </div>
+</form>
+
+{{# js}}
+    require(['jquery'], function($) {
+        $('[name="medicine"]').change(function() {
+            if (this.checked) {
+                $('[name="medicinedeps"]').show();
+            } else {
+                $('[name="medicinedeps"]').hide();
+            }
+        });
+    });
+{{/ js}}
