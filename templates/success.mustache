@@ -1,0 +1,21 @@
+{{!
+    @template mod_enea/success
+}}
+
+<br>
+<h3 class="text">{{# str}} successhdr, mod_enea {{/ str}}</h3>
+<br>
+
+<p class="text-left">{{# str}} successtext, mod_enea {{/ str}}.</p>
+
+<br>
+<form id="search-results-form">
+    <div style="display: none">
+    {{# id}}
+    <input name="id" type="hidden" value="{{ id }}">
+    {{/ id}}
+    {{# cmid}}
+    <input name="cmid" type="hidden" value="{{ cmid }}">
+    {{/ cmid}}
+    </div>
+</form>

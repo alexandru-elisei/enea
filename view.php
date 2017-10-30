@@ -53,6 +53,7 @@ require_login($course, true, $cm);
 $userid = $USER->id;
 $pagecontext = $id ? array('id' => $id) : array('cmid' => $e);
 $modulecontext = context_module::instance($cm->id);
+$formdata = $_POST ? $_POST : $_GET;
 
 $PAGE->set_url('/mod/enea/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($moduleinstance->name));
@@ -82,20 +83,19 @@ if (!$stage) {
 
 print_deb('stage = '.$stage);
 
-$reset = false;
-if ($reset) {
+// Go back to the beginning.
+if ($stage == stage::FINISHED) {
     $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
     $stage = stage::SELECT_KEYWORDS;
 }
 
 if ($stage == stage::SELECT_KEYWORDS) {
-    $formdata = $_POST ? $_POST : $_GET;
     if (!isset($formdata['searchbutton'])) {
         $mform = new mod_enea_selection_form(null, $pagecontext);
     } else {
         $data = $formdata;
         $data = array_merge($formdata, $pagecontext);
-        $select = new \mod_enea\output\select($data, stage::SELECT_KEYWORDS);
+        $select = new \mod_enea\output\select($data);
 
         $task = new \mod_enea\task\get_courses();
         $taskargs = array(
@@ -108,19 +108,31 @@ if ($stage == stage::SELECT_KEYWORDS) {
         \core\task\manager::queue_adhoc_task($task);
 
         $data = $pagecontext;
-        $renderer = new \mod_enea\output\waiting($data, stage::WAITING_FOR_RESULTS);
+        $renderer = new \mod_enea\output\waiting($data);
         $template = 'mod_enea/waiting';
         $PAGE->set_periodic_refresh_delay(REFRESH_TIME);
     }
 
 } else if ($stage == stage::WAITING_FOR_RESULTS) {
     $data = $pagecontext;
-    $renderer = new \mod_enea\output\waiting($data, stage::WAITING_FOR_RESULTS);
+    $renderer = new \mod_enea\output\waiting($data);
     $template = 'mod_enea/waiting';
 
     $PAGE->set_periodic_refresh_delay(REFRESH_TIME);
 
 } else if ($stage == stage::SELECT_COURSES) {
+
+    if (isset($formdata['finishbutton'])) {
+        $data = $pagecontext;
+        $renderer = new \mod_enea\output\success($data);
+        $template = 'mod_enea/success';
+
+        // Course enrollment finished for this user.
+        $DB->set_field('enea_users', 'stage', stage::FINISHED, array('userid' => $userid));
+
+        goto render_page;
+    }
+
     $searchresults = $DB->get_record('enea_users', array('userid' => $userid), 'searchresults', MUST_EXIST);
     $searchresults = json_decode($searchresults->searchresults, true);
 
@@ -134,7 +146,7 @@ if ($stage == stage::SELECT_KEYWORDS) {
         // Reset the selection.
         $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
 
-        goto render;
+        goto render_page;
     }
 
     if (!isset($searchresults['data'])) {
@@ -147,7 +159,7 @@ if ($stage == stage::SELECT_KEYWORDS) {
         // Reset the selection.
         $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
 
-        goto render;
+        goto render_page;
     }
 
     if (!$searchresults['success']) {
@@ -160,7 +172,7 @@ if ($stage == stage::SELECT_KEYWORDS) {
         // Reset the selection.
         $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
 
-        goto render;
+        goto render_page;
     }
 
     $data = array_merge($searchresults, $pagecontext);
@@ -168,9 +180,9 @@ if ($stage == stage::SELECT_KEYWORDS) {
     $template = 'mod_enea/search_results';
 }
 
+render_page:
 echo $OUTPUT->header();
 
-render:
 if ($mform) {
     $mform->display();
 } else {

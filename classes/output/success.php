@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderable for displaying the waiting for results page.
+ * Renderable for displaying the success page.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
@@ -32,13 +32,13 @@ use templatable;
 use stdClass;
 
 /**
- * Waiting for query results renderable.
+ * Success renderable.
  *
  * @package    mod_enea
  * @copyright  2017 Alexandru Elisei
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class waiting implements templatable, renderable {
+class success implements templatable, renderable {
 
     protected $data;
 
@@ -49,8 +49,8 @@ class waiting implements templatable, renderable {
     /**
      * Export this class data as a flat list for rendering in a template.
      *
-     * @param renderer_base $output The current page renderer.
-     * @return stdClass - Flat list of exported data.
+     * @param bootstrap_renderer $output The current page renderer.
+     * @return stdClass Flat list of exported data.
      */
     public function export_for_template(renderer_base $output) {
         return $this->data;

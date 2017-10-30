@@ -94,7 +94,7 @@ $string['clear'] = 'Clear';
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
 $string['search'] = 'Search';
 
-$string['waitinghdr'] = 'Processing your query';
+$string['waitinghdr'] = 'Processing your request';
 $string['waitingtext'] = 'Please wait while we search for courses matching your criteria. You will be automatically redirected when the results are ready';
 $string['refresh'] = 'Refresh';
 
@@ -111,3 +111,6 @@ $string['finish'] = 'Finish';
 $string['oops'] = 'Oops!';
 $string['errorprelude'] = 'An error occured while precessing your request:';
 $string['back'] = 'Back';
+
+$string['successhdr'] = 'Congratulations!';
+$string['successtext'] = 'You have been enrolled in the courses you have selected';

@@ -76,10 +76,8 @@ class select implements templatable, renderable {
         'science', 'guidelines', 'practice'
     );
 
-    public function __construct($formdata, $stage) {
-        $data = $formdata;
-        $data['stage'] = $stage;
-        $this->data = $data;
+    public function __construct($formdata) {
+        $this->data = (object)$formdata;
     }
 
     /**
