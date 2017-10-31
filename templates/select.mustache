@@ -10,8 +10,8 @@
 
 <form id="search-results-form">
     <div class="row">
-        <div class="text-left col-xs-6 col-md-4 col-lg-4">
-            <p id="fieldofexpertise"><dt>{{# str}} fieldofexpertise, mod_enea {{/ str}}</dt></p>
+        <div class="text-left col-xs-8 col-md-6 col-lg-6 lead">
+            <p id="fieldofexpertise"><dt><u>{{# str}} fieldofexpertise, mod_enea {{/ str}}</u></dt></p>
         </div>
     </div>
 
@@ -20,13 +20,13 @@
     {{$ option_text}}{{# str}} medicine, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
-    <div class="collapse-group">
-        <div name="medicinedeps" style="display:none">
-            {{< mod_enea/select_indent_row}}
-            {{$ option_name}}medicine{{/ option_name}}
-            {{$ option_text}}{{# str}} medicine, mod_enea {{/ str}}{{/ option_text}}
-            {{/ mod_enea/select_indent_row}}
-        </div>
+    <div name="medrevdeps" style="display:none">
+        {{# medrevdeps}}
+        {{< mod_enea/select_indent_row}}
+        {{$ option_name}}{{ name }}{{/ option_name}}
+        {{$ option_text}}{{ text }}{{/ option_text}}
+        {{/ mod_enea/select_indent_row}}
+        {{/ medrevdeps}}
     </div>
 
     {{< mod_enea/select_row}}
@@ -41,14 +41,83 @@
 
     <br>
     <div class="row">
-        <div class="text-left col-xs-6 col-md-4 col-lg-4">
-            <p id="topics"><dt>{{# str}} topics, mod_enea {{/ str}}</dt></p>
+        <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
+            <p id="topics"><dt><u>{{# str}} topics, mod_enea {{/ str}}<u></dt></p>
         </div>
     </div>
 
     {{< mod_enea/select_row}}
     {{$ option_name}}breastfeeding{{/ option_name}}
     {{$ option_text}}{{# str}} breastfeeding, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div name="bfrevdeps" style="display:none">
+        {{# bfrevdeps}}
+        {{< mod_enea/select_indent_row}}
+        {{$ option_name}}{{ name }}{{/ option_name}}
+        {{$ option_text}}{{ text }}{{/ option_text}}
+        {{/ mod_enea/select_indent_row}}
+        {{/ bfrevdeps}}
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}breastmilksubst{{/ option_name}}
+    {{$ option_text}}{{# str}} breastmilksubst, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div name="bmsrevdeps" style="display:none">
+        {{# bmsrevdeps}}
+        {{< mod_enea/select_indent_row}}
+        {{$ option_name}}{{ name }}{{/ option_name}}
+        {{$ option_text}}{{ text }}{{/ option_text}}
+        {{/ mod_enea/select_indent_row}}
+        {{/ bmsrevdeps}}
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
+            <p id="othertopics"><dt><u>{{# str}} othertopics, mod_enea {{/ str}}<u></dt></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-md-3 col-lg-2">
+            <input type="text" class="form-control" name="text" size="20">
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
+            <p id="typesthemes"><dt><u>{{# str}} typesthemes, mod_enea {{/ str}}<u></dt></p>
+        </div>
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}science{{/ option_name}}
+    {{$ option_text}}{{# str}} science, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}guidelines{{/ option_name}}
+    {{$ option_text}}{{# str}} guidelines, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}practice{{/ option_name}}
+    {{$ option_text}}{{# str}} practice, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <br>
+    <div class="row">
+        <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
+            <p id="cmepoints"><dt><u>{{# str}} cmepoints, mod_enea {{/ str}}<u></dt></p>
+        </div>
+    </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}cme{{/ option_name}}
+    {{$ option_text}}{{# str}} yes, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
     <div style="display: none">
@@ -59,15 +128,50 @@
     <input name="cmid" type="hidden" value="{{ cmid }}">
     {{/ cmid}}
     </div>
+
+    <br>
+    </div>
+    <div class="form-inline felement data-fieldtype="group"">
+        <div class="form-group fitem">
+            <input type="submit" class="btn btn-primary" name="searchbutton" value="{{# str}} search, mod_enea {{/ str}}">
+        </div>
+        <input class="btn btn-secondary" type="reset" name="clearbutton" value="{{# str}} clear, mod_enea {{/ str}}">
+    </div>
+
 </form>
 
 {{# js}}
     require(['jquery'], function($) {
         $('[name="medicine"]').change(function() {
             if (this.checked) {
-                $('[name="medicinedeps"]').show();
+                $('[name="medrevdeps"]').show(300);
             } else {
-                $('[name="medicinedeps"]').hide();
+                $('[name="medrevdeps"]').hide(300);
+                {{# medrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ medrevdeps}}
+            }
+        });
+
+        $('[name="breastfeeding"]').change(function() {
+            if (this.checked) {
+                $('[name="bfrevdeps"]').show(300);
+            } else {
+                $('[name="bfrevdeps"]').hide(300);
+                {{# bfrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ bfrevdeps}}
+            }
+        });
+
+        $('[name="breastmilksubst"]').change(function() {
+            if (this.checked) {
+                $('[name="bmsrevdeps"]').show(300);
+            } else {
+                $('[name="bmsrevdeps"]').hide(300);
+                {{# bmsrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ bmsrevdeps}}
             }
         });
     });

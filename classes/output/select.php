@@ -45,7 +45,7 @@ class select implements templatable, renderable {
     /**
      * Keywords that depend on the 'medicine' keyword.
      */
-    protected $medicinerevdeps = array(
+    protected $medrevdeps = array(
         'pediatrician', 'gynecologist', 'gp', 'other'
     );
 
@@ -78,6 +78,33 @@ class select implements templatable, renderable {
 
     public function __construct($formdata) {
         $this->data = (object)$formdata;
+
+        $medrevdeps = array();
+        foreach ($this->medrevdeps as $name) {
+            $medrevdeps[] = array(
+                'name' => 'med'.$name,
+                'text' => get_string($name, 'mod_enea'),
+            );
+        }
+        $this->data->medrevdeps = $medrevdeps;
+
+        $bfrevdeps = array();
+        foreach ($this->bfrevdeps as $name) {
+            $bfrevdeps[] = array(
+                'name' => 'bf'.$name,
+                'text' => get_string($name, 'mod_enea'),
+            );
+        }
+        $this->data->bfrevdeps = $bfrevdeps;
+
+        $bmsrevdeps = array();
+        foreach ($this->bmsrevdeps as $name) {
+            $bmsrevdeps[] = array(
+                'name' => 'bms'.$name,
+                'text' => get_string($name, 'mod_enea'),
+            );
+        }
+        $this->data->bmsrevdeps = $bmsrevdeps;
     }
 
     /**
@@ -99,8 +126,8 @@ class select implements templatable, renderable {
         $expertise = array();
         $medicine = array();
         if ($this->is_checked($formdata, 'medicine')) {
-            foreach ($this->medicinerevdeps as $keyword) {
-                if ($this->is_checked($formdata, $keyword)) {
+            foreach ($this->medrevdeps as $keyword) {
+                if ($this->is_checked($formdata, 'med'.$keyword)) {
                     $medicine[] = $keyword;
                 }
             }
@@ -152,13 +179,15 @@ class select implements templatable, renderable {
 
         $themes = array();
         foreach ($this->typesthemes as $theme) {
-            if ($this->is_checked($formdata, 'typesthemes'.$theme)) {
+            if ($this->is_checked($formdata, $theme)) {
                 $themes[] = $theme;
             }
         }
         if (!empty($themes)) {
             $request['themes'] = $themes;
         }
+
+        // TODO: cme points
 
         return $request;
     }
