@@ -64,7 +64,7 @@ $string['hypertension'] = 'Hypertension';
 $string['allergy'] = 'Allergy';
 $string['respiratoryinfections'] = 'Respiratory Infections';
 $string['cognition'] = 'Cognition';
-$string['disease'] = 'disease';
+$string['disease'] = 'Disease';
 $string['maternalhealth'] = 'Maternal Health';
 $string['statistics'] = 'Statistics';
 $string['contraindications'] = 'Contraindications';
@@ -90,9 +90,10 @@ $string['science'] = 'Science';
 $string['guidelines'] = 'Guidelines';
 $string['practice'] = 'Practice';
 $string['cmepoints'] = 'CME points';
-$string['yes'] = 'Yes';
+$string['cmeaccredited'] = 'CME Accredited';
 $string['clear'] = 'Clear';
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';
+$string['missingrecommended'] = 'No courses matching your criteria were found';
 $string['search'] = 'Search';
 
 $string['waitinghdr'] = 'Processing your request';
@@ -107,7 +108,7 @@ $string['title'] = 'Title';
 $string['time'] = 'Time';
 $string['recommendedlessons'] = 'Recommended lessons';
 $string['followuplessons'] = 'Follow-up lessons';
-$string['finish'] = 'Finish';
+$string['finish'] = 'Add to MyLearning Module';
 
 $string['oops'] = 'Oops!';
 $string['errorprelude'] = 'An error occured while precessing your request:';
@@ -115,3 +116,6 @@ $string['back'] = 'Back';
 
 $string['successhdr'] = 'Congratulations!';
 $string['successtext'] = 'You have been enrolled in the courses you have selected';
+
+$string['totaltime'] = 'Total time';
+$string['cmepoints'] = 'CME Points';

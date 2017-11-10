@@ -43,7 +43,7 @@ class error implements templatable, renderable {
     protected $data;
 
     public function __construct($data) {
-        $this->data = (object)$data;
+        $this->data = $data;
     }
 
     /**
@@ -53,6 +53,6 @@ class error implements templatable, renderable {
      * @return stdClass - Flat list of exported data.
      */
     public function export_for_template(renderer_base $output) {
-        return $this->data;
+        return (object)$this->data;
     }
 }

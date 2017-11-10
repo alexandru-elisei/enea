@@ -1,0 +1,31 @@
+{{!
+    @template mod_enea/select
+}}
+
+<br>
+<h3 class="text">{{# str}} selectoptions, mod_enea {{/ str}}</h3>
+<br>
+
+<p class="text-left"> {{# str}} chooseoptions, mod_enea {{/ str}}</p>
+<br>
+
+<form id="search-results-form">
+    <div class="row">
+        <div class="text-left col-xs-1 col-md-1 col-lg-1">
+            <a class="btn btn-link p-a-0" role="button" data-container="body" data-toggle="popover" data-placement="right" data-content='<div class=no-overflow"><p>Please select.</p></div>' data-html="true" tabindex="0" data-trigger="focus">
+                <img class="icon smallicon" alt="?" title="title" src="/moodle/theme/image.php/boost/core/1509367840/help">
+            </a>
+        </div>
+        <div class="text-left col-xs-5 col-md-3 col-lg-3">
+            <dt>{{# str}} fieldofexpertise, mod_enea {{/ str}}</dt>
+        </div>
+    </div>
+    <div style="display: none">
+    {{# id}}
+    <input name="id" type="hidden" value="{{ id }}">
+    {{/ id}}
+    {{# cmid}}
+    <input name="cmid" type="hidden" value="{{ cmid }}">
+    {{/ cmid}}
+    </div>
+</form>

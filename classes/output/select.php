@@ -141,9 +141,7 @@ class select implements templatable, renderable {
         if ($this->is_checked($formdata, 'nutrition')) {
             $expertise[] = 'nutrition';
         }
-        if (!empty($expertise)) {
-            $request['expertise'] = $expertise;
-        }
+        $request['expertise'] = $expertise;
 
         $topics = array();
         $breastfeeding = array();
@@ -169,12 +167,12 @@ class select implements templatable, renderable {
         if (!empty($breastmilksubst)) {
             $topics[] = array('breastmilksubst' => $breastmilksubst);
         }
-        if (!empty($topics)) {
-            $request['topics'] = $topics;
-        }
+        $request['topics'] = $topics;
 
         if ($this->is_checked($formdata, 'text')) {
             $request['text'] = $formdata['text'];
+        } else {
+            $request['text'] = '';
         }
 
         $themes = array();
@@ -183,11 +181,13 @@ class select implements templatable, renderable {
                 $themes[] = $theme;
             }
         }
-        if (!empty($themes)) {
-            $request['themes'] = $themes;
-        }
+        $request['themes'] = $themes;
 
-        // TODO: cme points
+        if ($this->is_checked($formdata, 'cme')) {
+            $request['cme'] = true;
+        } else {
+            $request['cme'] = false;
+        }
 
         return $request;
     }

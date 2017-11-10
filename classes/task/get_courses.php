@@ -38,14 +38,23 @@ class get_courses extends \core\task\adhoc_task {
     public function execute() {
         global $DB;
 
-        $data = $this->get_custom_data();
-        $userid = $data->userid;
-        $keywords = $data->keywords;
+        $data = (array)$this->get_custom_data();
+        $userid = $data['userid'];
+        $keywords = json_encode($data['keywords']);
 
-        // TODO: contact server.
-        $searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
+        //$searchresults = '{"data":[{"title":"Lesson title 1","link":"lesson-title-1","similarityScore":0.41,"time":465,"prerequisites":["Pre1","Pre2"],"postrequisites":["Post1"]},{"title":"Lesson title 2","link":"lesson-title-2","similarityScore":0.42,"time":7200,"prerequisites":["Pre2"],"postrequisites":[]},{"title":"Pre1","link":"pre-lesson-title-1","similarityScore":0.32,"time":1345,"prerequisites":[],"postrequisites":[]},{"title":"Pre2","link":"pre-lesson-title-2","similarityScore":0.76,"time":1200,"prerequisites":["Pre1"],"postrequisites":[]},{"title":"Post1","link":"post-lesson-title-2","similarityScore":0.5,"time":50,"prerequisites":[],"postrequisites":[]}],"recommended":["Lesson title 1","Lesson title 2"],"success":true,"errorMsg":""}';
+
+        $url = 'http://readerbench.com:8080/enea-customisation';
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $keywords);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $searchresults = curl_exec($ch);
+        curl_close($ch);
+
         $DB->set_field('enea_users', 'searchresults', $searchresults, array('userid' => $userid));
-
         $DB->set_field('enea_users', 'stage', 2, array('userid' => $userid));
     }
 }

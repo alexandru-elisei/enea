@@ -81,7 +81,7 @@ if (!$stage) {
     $stage = $stage->stage;
 }
 
-print_deb('stage = '.$stage);
+//print_deb('stage = '.$stage);
 
 // Go back to the beginning.
 if ($stage == stage::FINISHED) {
@@ -96,20 +96,19 @@ if ($stage == stage::SELECT_KEYWORDS) {
         $renderer = new \mod_enea\output\select($data);
         $template = 'mod_enea/select';
 
-        //$mform = new mod_enea_selection_form();
-
     } else {
         $data = $formdata;
         $data = array_merge($formdata, $pagecontext);
         $select = new \mod_enea\output\select($data);
-
-        print_deb($formdata);
 
         $task = new \mod_enea\task\get_courses();
         $taskargs = array(
             'userid' => $userid,
             'keywords' => $select->export_for_server(),
         );
+
+        //print_deb(json_encode($taskargs['keywords']));
+
         $task->set_custom_data($taskargs);
         $DB->set_field('enea_users', 'stage', stage::WAITING_FOR_RESULTS, array('userid' => $userid));
 
@@ -142,37 +141,37 @@ if ($stage == stage::SELECT_KEYWORDS) {
     }
 
     $searchresults = $DB->get_record('enea_users', array('userid' => $userid), 'searchresults', MUST_EXIST);
+    //print_deb($searchresults->searchresults);
+
+    //$searchresults->searchresults = '{"data":{"lessons":[{"id":"3.3.3","title":"Optional Components of Infant Formula","uri":"here1","time":10,"similarityScore":0.7264344035877423,"prerequisites":["3.3.1"],"postrequisites":["2.1.2"]},{"id":"2.1.2","title":"Composition of Human Milk","uri":"here2","time":15,"similarityScore":0.7229355471400114,"prerequisites":["2.1.1"],"postrequisites":[]},{"id":"3.3.2","title":"Major Components of Infant Formula","uri":"here3","time":15,"similarityScore":0.7116147619386389,"prerequisites":["3.3.1"],"postrequisites":["3.3.3"]},{"id":"3.4.2","title":"Correct Formula Preparation","uri":"here4","time":15,"similarityScore":0.6896124373988142,"prerequisites":["3.4.1"],"postrequisites":[]},{"id":"3.4.3","title":"Correct Bottle-Feeding Practice","uri":"here5","time":10,"similarityScore":0.7088258492646591,"prerequisites":[],"postrequisites":["3.4.4"]},{"id":"3.2.2","title":"Non-Medical Reasons for Formula Feeding","uri":"here6","time":15,"similarityScore":0.6753481420126302,"prerequisites":[],"postrequisites":["3.2.3"]},{"id":"3.1.2","title":"Case Study:Hypernatremia","uri":"","time":12,"similarityScore":0.9831887343729273,"prerequisites":[],"postrequisites":[]},{"id":"3.4.4","title":"Weaning From Bottle-Feeding","uri":"here7","time":10,"similarityScore":0.7632517493953542,"prerequisites":[],"postrequisites":["3.4.3"]},{"id":"3.4.1","title":"Preparation of Infant Formula","uri":"here8","time":12,"similarityScore":0.735385076632274,"prerequisites":["3.1.2"],"postrequisites":["3.4.2"]}],"recommended":["3.3.3","2.1.2","3.3.2","3.4.4","3.1.2","3.4.2","3.4.3","3.2.2","3.4.1"],"time":114,"cmePoints":1.9},"success":true,"errorMsg":""}';
     $searchresults = json_decode($searchresults->searchresults, true);
 
-    if (!isset($searchresults['recommended'])) {
-        $data = new stdClass();
-        $data->errormsg = get_string('missingrecommended', 'mod_enea');
-        $data = array_merge($data, $pagecontext);
-        $renderer = new \mod_enea\output\error($data);
-        $template = 'mod_enea/error';
-
-        // Reset the selection.
-        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
-
-        goto render_page;
-    }
-
-    if (!isset($searchresults['data'])) {
-        $data = new stdClass();
-        $data->errormsg = get_string('missingdata', 'mod_enea');
-        $data = array_merge($data, $pagecontext);
-        $renderer = new \mod_enea\output\error($data);
-        $template = 'mod_enea/error';
-
-        // Reset the selection.
-        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
-
-        goto render_page;
-    }
-
     if (!$searchresults['success']) {
-        $data = new stdClass();
-        $data->errormsg = $searchresults['errorMsg'];
+        $data = array('errormsg' => $searchresults['errorMsg']);
+        $data = array_merge($data, $pagecontext);
+        $renderer = new \mod_enea\output\error($data);
+        $template = 'mod_enea/error';
+
+        // Reset the selection.
+        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
+
+        goto render_page;
+    }
+
+    if (!isset($searchresults['data']) or empty($searchresults['data'])) {
+        $data = array('errormsg' => get_string('missingdata', 'mod_enea'));
+        $data = array_merge($data, $pagecontext);
+        $renderer = new \mod_enea\output\error($data);
+        $template = 'mod_enea/error';
+
+        // Reset the selection.
+        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
+
+        goto render_page;
+    }
+
+    if (!isset($searchresults['data']['recommended']) or empty($searchresults['data']['recommended'])) {
+        $data = array('errormsg' => get_string('missingrecommended', 'mod_enea'));
         $data = array_merge($data, $pagecontext);
         $renderer = new \mod_enea\output\error($data);
         $template = 'mod_enea/error';
