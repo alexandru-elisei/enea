@@ -22,9 +22,9 @@
 
     {{# prereq}}
     {{< mod_enea/course_list_row}}
-    {{$ elt_name}}{{ name }}{{/ elt_name}}
+    {{$ elt_name}}{{ id }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
-    {{$ course_link}}{{ link }}{{/ course_link}}
+    {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
     {{/ prereq}}
@@ -43,9 +43,9 @@
 
     {{# recommended}}
     {{< mod_enea/course_list_row}}
-    {{$ elt_name}}{{ name }}{{/ elt_name}}
+    {{$ elt_name}}{{ id }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
-    {{$ course_link}}{{ link }}{{/ course_link}}
+    {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
     {{/ recommended}}
@@ -64,28 +64,38 @@
 
     {{# postreq}}
     {{< mod_enea/course_list_row}}
-    {{$ elt_name}}{{ name }}{{/ elt_name}}
-    {{$ course_title}}{{ title }}{{/ course_title}}
+    {{$ elt_name}}{{ id }}{{/ elt_name}}
+    {{$ course_title}}{{ uri }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
     {{/ mod_enea/course_list_row}}
     {{/ postreq}}
     {{/ has_postreq}}
 
-    <div style="display: none">
-    <input name="directdeps" type="hidden" value="{{ directdeps }}">
-    <input name="reversedeps" type="hidden" value="{{ reversedeps }}">
-    {{# id}}
-    <input name="id" type="hidden" value="{{ id }}">
-    {{/ id}}
-    {{# cmid}}
-    <input name="cmid" type="hidden" value="{{ cmid }}">
-    {{/ cmid}}
+    <br>
+    <div class="form-row text-left ">
+        <p>{{# str}} totaltime, mod_enea {{/ str}}: {{ time }}</p>
+    </div>
 
+
+    {{# cmepoints}}
+    <div class="form-row text-left ">
+        <p>{{# str}} cmepoints, mod_enea {{/ str}}: {{ . }}</p>
+    </div>
+    {{/ cmepoints}}
+
+    <div style="display: none">
+        <input name="directdeps" type="hidden" value="{{ directdeps }}">
+        <input name="reversedeps" type="hidden" value="{{ reversedeps }}">
+        {{# id}}
+        <input name="id" type="hidden" value="{{ id }}">
+        {{/ id}}
+        {{# cmid}}
+        <input name="cmid" type="hidden" value="{{ cmid }}">
+        {{/ cmid}}
     </div>
 
     <br>
-    </div>
     <div class="form-inline felement data-fieldtype="group"">
         <div class="form-group fitem">
             <input type="submit" class="btn btn-primary" name="finishbutton" value="{{# str}} finish, mod_enea {{/ str}}">
@@ -102,23 +112,24 @@
 
             // When loading the document, disable all the courses that have a
             // dependency because there are no checked checkboxes on the page.
-            $.each(directdeps, function(name, deps) {
-                $("[name='" + name + "']").prop('disabled', true);
+            $.each(directdeps, function(id, deps) {
+                $("[name='" + id + "']").prop('disabled', true);
             });
 
-            // For each course 'name' that has courses that depend on it check if
-            // the courses that depend on it can be enabled when 'name' is
+            // For each course 'id' that has courses that depend on it check if
+            // the courses that depend on it can be enabled when 'id' is
             // checked.
-            $.each(reversedeps, function(name, revdeps) {
-                $("[name='" + name + "']").change(function() {
+            $.each(reversedeps, function(id, revdeps) {
+                $("[name='" + id + "']").change(function() {
                     if (!this.checked) {
-                        // If 'name' is unchecked then disable all the courses
+                        // If 'id' is unchecked then disable all the courses
                         // that depend on it.
                         $.each(revdeps, function(_, revdep) {
                             $("[name='" + revdep + "']").prop('disabled', true);
+                            $("[name='" + revdep + "']").prop('checked', false);
                         });
                     } else {
-                        // For each course that depends on 'name' check that all
+                        // For each course that depends on 'id' check that all
                         // of their dependencies are enabled and checked and
                         // enable them.
                         $.each(revdeps, function(_, revdep) {
@@ -141,8 +152,9 @@
 
             $('#search-results-form').on('reset', function() {
                 setTimeout(function() {
-                    $.each(directdeps, function(name, deps) {
-                        $("[name='" + name + "']").prop('disabled', true);
+                    $.each(directdeps, function(id, deps) {
+                        $("[name='" + id + "']").prop('disabled', true);
+                        $("[name='" + id + "']").prop('checked', false);
                     });
                 });
             });
