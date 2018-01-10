@@ -77,16 +77,10 @@
         <p>{{# str}} totaltime, mod_enea {{/ str}}: {{ time }}</p>
     </div>
 
-
-    {{# cmepoints}}
-    <div class="form-row text-left ">
-        <p>{{# str}} cmepoints, mod_enea {{/ str}}: {{ . }}</p>
-    </div>
-    {{/ cmepoints}}
-
     <div style="display: none">
         <input name="directdeps" type="hidden" value="{{ directdeps }}">
         <input name="reversedeps" type="hidden" value="{{ reversedeps }}">
+        <input name="postreqids" type="hidden" value="{{ postreqids }}">
         {{# id}}
         <input name="id" type="hidden" value="{{ id }}">
         {{/ id}}
@@ -107,14 +101,51 @@
 {{# js}}
     require(['jquery'], function($) {
         $('document').ready(function() {
-            var directdeps = JSON.parse($('[name="directdeps"]').val());
-            var reversedeps = JSON.parse($('[name="reversedeps"]').val());
+            var directdeps = JSON.parse($('[name="directdeps"]').val())
+            var reversedeps = JSON.parse($('[name="reversedeps"]').val())
 
             // When loading the document, disable all the courses that have a
             // dependency because there are no checked checkboxes on the page.
+            //
+            /*
+            // Not needed for now - all the prereq and recommended courses are
+            // enabled by default and we disable postreq courses if they don't
+            // have all their dependencies checked.
             $.each(directdeps, function(id, deps) {
-                $("[name='" + id + "']").prop('disabled', true);
+                $("[name='" + id + "']").prop('disabled', true)
             });
+            */
+
+            // All recommended lessons are enabled and checked by default.
+            {{# recommended}}
+            $("[name='{{ id }}']").prop('disabled', false)
+            $("[name='{{ id }}']").prop('checked', true)
+            {{/ recommended}}
+
+            // All prerequisite lessons are enabled and checked by default.
+            {{# prereq}}
+            $("[name='{{ id }}']").prop('disabled', false)
+            $("[name='{{ id }}']").prop('checked', true)
+            {{/ prereq}}
+
+            // Disable only those postrequisites that don't have all of their
+            // dependencies enabled and checked.
+            {{# postreq}}
+            if ({{ id }} in directdeps) {
+                to_disable = false
+                $.each(directdeps[{{ id }}], function(_, dirdep) {
+                    if (!$("[name='" + dirdep + "']").prop('checked') ||
+                             $("[name='" + dirdep + "']").prop('disabled')) {
+                        to_disable = true
+                        break
+                    }
+                })
+                if (to_disable) {
+                    $("[name='{{ id }}']").prop('checked', false)
+                    $("[name='{{ id }}']").prop('disabled', true)
+                }
+            }
+            {{/ postreq}}
 
             // For each course 'id' that has courses that depend on it check if
             // the courses that depend on it can be enabled when 'id' is
@@ -125,25 +156,26 @@
                         // If 'id' is unchecked then disable all the courses
                         // that depend on it.
                         $.each(revdeps, function(_, revdep) {
-                            $("[name='" + revdep + "']").prop('disabled', true);
-                            $("[name='" + revdep + "']").prop('checked', false);
+                            $("[name='" + revdep + "']").prop('disabled', true)
+                            $("[name='" + revdep + "']").prop('checked', false)
                         });
                     } else {
                         // For each course that depends on 'id' check that all
                         // of their dependencies are enabled and checked and
                         // enable them.
                         $.each(revdeps, function(_, revdep) {
-                            to_enable = true;
+                            to_enable = true
                             $.each(directdeps[revdep], function(_, dirdep) {
                                 if (!$("[name='" + dirdep + "']").prop('checked') ||
                                          $("[name='" + dirdep + "']").prop('disabled')) {
-                                    to_enable = false;
+                                    to_enable = false
+                                    break
                                 }
                             });
                             if (to_enable == true) {
-                                $("[name='" + revdep + "']").prop('disabled', false);
+                                $("[name='" + revdep + "']").prop('disabled', false)
                             } else {
-                                $("[name='" + revdep + "']").prop('disabled', true);
+                                $("[name='" + revdep + "']").prop('disabled', true)
                             }
                         });
                     }
@@ -155,7 +187,9 @@
                     $.each(directdeps, function(id, deps) {
                         $("[name='" + id + "']").prop('disabled', true);
                         $("[name='" + id + "']").prop('checked', false);
+
                     });
+
                 });
             });
         });

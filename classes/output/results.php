@@ -31,6 +31,17 @@ use renderable;
 use templatable;
 use stdClass;
 
+/*
+ * Compare two courses by thir id.
+ *
+ * @param array $a First course.
+ * @param array $b Second course.
+ * @return int 0 if their title are equal, 1 if $a is greater, -1 otherwise.
+ */
+function sort_by_title($a, $b) {
+    return strcmp($a['title'], $b['title']);
+}
+
 /**
  * Search results renderable.
  *
@@ -136,11 +147,25 @@ class results implements templatable, renderable {
             }
         }
 
+        // Sort the courses by title.
+        usort($data['recommended'], function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+        usort($data['prereq'], function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+        usort($data['postreq'], function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+
         // Create the list of all direct dependencies.
         $data['directdeps'] = array();
         foreach ($coursedeps as $id => $_) {
             $visited = array();
-            $data['directdeps'][$id] = $this->get_all_deps($id, $coursedeps, $visited);
+            $directdeps = $this->get_all_deps($id, $coursedeps, $visited);
+            if (!empty($directdeps)) {
+                $data['directdeps'][$id] = $directdeps;
+            }
         }
 
         // Create the list of all reverse dependencies.
@@ -157,6 +182,16 @@ class results implements templatable, renderable {
         $data['directdeps'] = json_encode($data['directdeps']);
         $data['reversedeps'] = json_encode($data['reversedeps']);
 
+        // Create a list of all the prerequisites, some of them might be enabled
+        // at page load because all the recommended and prerequisite courses are
+        // checked by default.
+        $data['postreqids'] = array();
+        foreach ($data['prereq'] as $_ => $course) {
+            $data['postreqids'][] = $course['id'];
+        }
+        $data['postreqids'] = json_encode($data['postreqids']);
+
+
         if (!empty($data['prereq'])) {
             $data['has_prereq'] = true;
         }
@@ -171,9 +206,6 @@ class results implements templatable, renderable {
         }
 
         $data['time'] = $this->timestr($searchresults['data']['time']);
-        if ($searchresults['data']['cmePoints']) {
-            $data['cmepoints'] = round($searchresults['data']['cmePoints'], 2);
-        }
 
         $this->data = $data;
     }
@@ -236,3 +268,4 @@ class results implements templatable, renderable {
         return $ret;
     }
 }
+
