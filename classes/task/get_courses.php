@@ -50,6 +50,10 @@ class get_courses extends \core\task\adhoc_task {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $keywords);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Accept: application/json',
+                'Content-Type: application/json'
+        ));
 
         $error = curl_error($ch);
         if ($error) {
