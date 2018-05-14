@@ -30,13 +30,23 @@
     </div>
 
     {{< mod_enea/select_row}}
-    {{$ option_name}}nursing{{/ option_name}}
-    {{$ option_text}}{{# str}} nursing, mod_enea {{/ str}}{{/ option_text}}
+    {{$ option_name}}nursing_midwifery{{/ option_name}}
+    {{$ option_text}}{{# str}} nursing_midwifery, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
     {{< mod_enea/select_row}}
-    {{$ option_name}}nutrition{{/ option_name}}
-    {{$ option_text}}{{# str}} nutrition, mod_enea {{/ str}}{{/ option_text}}
+    {{$ option_name}}nutrition_dietetics{{/ option_name}}
+    {{$ option_text}}{{# str}} nutrition_dietetics, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}otherhealthcareworkers{{/ option_name}}
+    {{$ option_text}}{{# str}} otherhealthcareworkers, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}student_trainee{{/ option_name}}
+    {{$ option_text}}{{# str}} student_trainee, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
     <br>
@@ -45,6 +55,21 @@
             <p id="topics"><dt><u>{{# str}} topics, mod_enea {{/ str}}<u></dt></p>
         </div>
     </div>
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}pregnancy{{/ option_name}}
+    {{$ option_text}}{{# str}} pregnancy, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div name="pregnancyrevdeps" style="display:none">
+        {{# pregnancyrevdeps}}
+        {{< mod_enea/select_indent_row}}
+        {{$ option_name}}{{ name }}{{/ option_name}}
+        {{$ option_text}}{{ text }}{{/ option_text}}
+        {{/ mod_enea/select_indent_row}}
+        {{/ pregnancyrevdeps}}
+    </div>
+
 
     {{< mod_enea/select_row}}
     {{$ option_name}}breastfeeding{{/ option_name}}
@@ -74,6 +99,20 @@
         {{/ bmsrevdeps}}
     </div>
 
+    {{< mod_enea/select_row}}
+    {{$ option_name}}preterm{{/ option_name}}
+    {{$ option_text}}{{# str}} preterm, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    <div name="pretermrevdeps" style="display:none">
+        {{# pretermrevdeps}}
+        {{< mod_enea/select_indent_row}}
+        {{$ option_name}}{{ name }}{{/ option_name}}
+        {{$ option_text}}{{ text }}{{/ option_text}}
+        {{/ mod_enea/select_indent_row}}
+        {{/ pretermrevdeps}}
+    </div>
+
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
@@ -89,23 +128,23 @@
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
-            <p id="typesthemes"><dt><u>{{# str}} typesthemes, mod_enea {{/ str}}<u></dt></p>
+            <p id="themes"><dt><u>{{# str}} themes, mod_enea {{/ str}}<u></dt></p>
         </div>
     </div>
 
     {{< mod_enea/select_row}}
-    {{$ option_name}}science{{/ option_name}}
-    {{$ option_text}}{{# str}} science, mod_enea {{/ str}}{{/ option_text}}
+    {{$ option_name}}background{{/ option_name}}
+    {{$ option_text}}{{# str}} background, mod_enea {{/ str}}{{/ option_text}}
+    {{/ mod_enea/select_row}}
+
+    {{< mod_enea/select_row}}
+    {{$ option_name}}practicecounselling{{/ option_name}}
+    {{$ option_text}}{{# str}} practicecounselling, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
     {{< mod_enea/select_row}}
     {{$ option_name}}guidelines{{/ option_name}}
     {{$ option_text}}{{# str}} guidelines, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
-
-    {{< mod_enea/select_row}}
-    {{$ option_name}}practice{{/ option_name}}
-    {{$ option_text}}{{# str}} practice, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
 
     <br>
@@ -143,6 +182,9 @@
         $('[name="medicine"]').change(function() {
             if (this.checked) {
                 $('[name="medrevdeps"]').show(300);
+                {{# medrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ medrevdeps}}
             } else {
                 $('[name="medrevdeps"]').hide(300);
                 {{# medrevdeps}}
@@ -154,6 +196,37 @@
         $('[name="breastfeeding"]').change(function() {
             if (this.checked) {
                 $('[name="bfrevdeps"]').show(300);
+                {{# bfrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ bfrevdeps}}
+            } else {
+                $('[name="bfrevdeps"]').hide(300);
+                {{# bfrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ bfrevdeps}}
+            }
+        });
+
+        $('[name="pregnancy"]').change(function() {
+            if (this.checked) {
+                $('[name="pregnancyrevdeps"]').show(300);
+                {{# pregnancyrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ pregnancyrevdeps}}
+            } else {
+                $('[name="pregnancyrevdeps"]').hide(300);
+                {{# pregnancyrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ pregnancyrevdeps}}
+            }
+        });
+
+        $('[name="breastfeeding"]').change(function() {
+            if (this.checked) {
+                $('[name="bfrevdeps"]').show(300);
+                {{# bfrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ bfrevdeps}}
             } else {
                 $('[name="bfrevdeps"]').hide(300);
                 {{# bfrevdeps}}
@@ -165,11 +238,28 @@
         $('[name="breastmilksubst"]').change(function() {
             if (this.checked) {
                 $('[name="bmsrevdeps"]').show(300);
+                {{# bmsrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ bmsrevdeps}}
             } else {
                 $('[name="bmsrevdeps"]').hide(300);
                 {{# bmsrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ bmsrevdeps}}
+            }
+        });
+
+        $('[name="preterm"]').change(function() {
+            if (this.checked) {
+                $('[name="pretermrevdeps"]').show(300);
+                {{# pretermrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', true);
+                {{/ pretermrevdeps}}
+            } else {
+                $('[name="pretermrevdeps"]').hide(300);
+                {{# pretermrevdeps}}
+                $('[name="{{ name }}"]').prop('checked', false);
+                {{/ pretermrevdeps}}
             }
         });
     });

@@ -55,9 +55,9 @@ class results implements templatable, renderable {
 
     public function __construct($searchresults) {
         $searchresults = $searchresults;
-        $recommendedtitles = array();
+        $recommended = array();
         foreach ($searchresults['data']['recommended'] as $id) {
-            $recommendedtitles[$id] = true;
+            $recommended[$id] = true;
         }
 
         /*
@@ -71,8 +71,8 @@ class results implements templatable, renderable {
 
         // Remove any recommended course that don't exist in the reply.
         foreach ($exists as $id => $_) {
-            if (!isset($recommendedtitles[$id])) {
-                unset($recommendedtitles[$id]);
+            if (!isset($recommended[$id])) {
+                unset($recommended[$id]);
             }
         }
 
@@ -121,13 +121,13 @@ class results implements templatable, renderable {
                 }
             }
 
-            foreach ($course['postrequisites'] as $postreqid) {
+            foreach ($course['postrequisites'] as $id) {
                 // The postrequisite course will depend on the current course.
-                if (!isset($coursedeps[$postreqid])) {
-                    $coursedeps[$postreqid] = array();
+                if (!isset($coursedeps[$id])) {
+                    $coursedeps[$id] = array();
                 }
-                $coursedeps[$postreqid][] = $course['id'];
-                $postreqtitles[$postreqid] = true;
+                $coursedeps[$id][] = $course['id'];
+                $postreqtitles[$id] = true;
             }
         }
 
@@ -138,11 +138,12 @@ class results implements templatable, renderable {
         );
 
         foreach ($searchresults['data']['lessons'] as $course) {
-            if (isset($recommendedtitles[$course['id']])) {
+            $id = $course['id'];
+            if (array_key_exists($id, $recommended)) {
                 $data['recommended'][] = $course;
-            } else if (isset($prereqtitles[$course['id']])) {
+            } else if (array_key_exists($id, $prereqtitles)) {
                 $data['prereq'][] = $course;
-            } else if (isset($postreqtitles[$course['id']])) {
+            } else if (array_key_exists($id, $postreqtitles)) {
                 $data['postreq'][] = $course;
             }
         }
@@ -180,7 +181,12 @@ class results implements templatable, renderable {
         }
 
         $data['directdeps'] = json_encode($data['directdeps']);
+        print('<br><br>DIRECT DEPS<br>');
+        print_r($data['directdeps']);
+
         $data['reversedeps'] = json_encode($data['reversedeps']);
+        print('<br>REVERSE DEPS<br>');
+        print_r($data['reversedeps']);
 
         // Create a list of all the prerequisites, some of them might be enabled
         // at page load because all the recommended and prerequisite courses are
