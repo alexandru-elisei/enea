@@ -158,3 +158,5 @@ $string['successtext'] = 'You have been enrolled in the courses you have selecte
 
 $string['totaltime'] = 'Total time';
 $string['cmepoints'] = 'CME Points';
+
+$string['helpmessageplaceholder'] = 'Help message placeholder';

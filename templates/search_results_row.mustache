@@ -4,7 +4,8 @@
 
 <search_results_row>
 <div class="row fitem">
-    <div class="cols-xs-8 col-md-4 col-lg-4">
+
+    <div class="cols-xs-9 col-md-5 col-lg-5">
         <span class="text-left">
             <label class="no-bottom-margin form-check-label custom-control custom-checkbox">
                 <input type="checkbox" name="{{$ elt_name}}{{/ elt_name}}" class="form-check-input">
@@ -13,9 +14,15 @@
                     </a>
             </label>
         </span>
+
+        <a class="btn btn-link p-a-0" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-content="{{$ course_help}}{{/ course_help}}" name="help{{$ course_id}}{{/ course_id}}" data-trigger="focus">
+            <i class="icon fa fa-question-circle-o text-info fa-fw" title="Help with {{$ course_title}}{{/ course_title}}">?</i>
+        </a>
     </div>
-    <div class="cols-xs-4 col-md-2 col-lg-2">
+
+    <div class="cols-xs-3 col-md-2 col-lg-2">
         <span class="text-left">{{$ course_time}}{{/ course_time}}</span>
     </div>
+
 </div>
 <search_results_row>

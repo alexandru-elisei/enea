@@ -56,6 +56,14 @@ class results implements templatable, renderable {
     public function __construct($searchresults) {
         $searchresults = $searchresults;
         $recommended = array();
+
+        // Add placeholder for help message if not present.
+        foreach ($searchresults['data']['lessons'] as $key => $course) {
+            if (!isset($course['help'])) {
+                $searchresults['data']['lessons'][$key]['help'] = get_string('helpmessageplaceholder', 'mod_enea');
+            }
+        }
+
         foreach ($searchresults['data']['recommended'] as $id) {
             $recommended[$id] = true;
         }
@@ -94,6 +102,7 @@ class results implements templatable, renderable {
             }
             $searchresults['data']['lessons'][$key]['prerequisites'] = $pre;
         }
+
 
         $prereqtitles = array();
         $postreqtitles = array();
@@ -204,6 +213,7 @@ class results implements templatable, renderable {
         if (!empty($data['postreq'])) {
             $data['has_postreq'] = true;
         }
+
 
         if (isset($searchresults['id'])) {
             $data['id'] = $searchresults['id'];

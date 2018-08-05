@@ -16,10 +16,10 @@
         <dt><u>{{# str}} prerequisites, mod_enea {{/ str}}</u></dt>
     </div>
 
-    {{< mod_enea/course_list_heading}}
+    {{< mod_enea/search_results_category_heading}}
     {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
-    {{/ mod_enea/course_list_heading}}
+    {{/ mod_enea/search_results_category_heading}}
 
     {{# prereq}}
     {{< mod_enea/search_results_row}}
@@ -27,6 +27,7 @@
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ prereq}}
     <br>
@@ -37,10 +38,10 @@
         <dt><u>{{# str}} recommendedlessons, mod_enea {{/ str}}</u></dt>
     </div>
 
-    {{< mod_enea/course_list_heading}}
+    {{< mod_enea/search_results_category_heading}}
     {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
-    {{/ mod_enea/course_list_heading}}
+    {{/ mod_enea/search_results_category_heading}}
 
     {{# recommended}}
     {{< mod_enea/search_results_row}}
@@ -48,6 +49,7 @@
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ recommended}}
 
@@ -58,10 +60,10 @@
         <dt><u>{{# str}} followuplessons, mod_enea {{/ str}}</u></dt>
     </div>
 
-    {{< mod_enea/course_list_heading}}
+    {{< mod_enea/search_results_category_heading}}
     {{$ title}} {{# str}} title, mod_enea {{/ str}} {{/ title}}
     {{$ time}}  {{# str}} time, mod_enea {{/ str}}  {{/ time}}
-    {{/ mod_enea/course_list_heading}}
+    {{/ mod_enea/search_results_category_heading}}
 
     {{# postreq}}
     {{< mod_enea/search_results_row}}
@@ -69,6 +71,7 @@
     {{$ course_title}}{{ uri }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ postreq}}
     {{/ has_postreq}}
@@ -98,6 +101,14 @@
         </div>
         <input class="btn btn-secondary" type="reset" name="clearbutton" value="{{# str}} clear, mod_enea {{/ str}}">
     </div>
+
+{{!
+    <div class="box generalbox">
+        <a class="btn btn-link p-a-0" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-content="Help message" name="helpbutton" data-trigger="focus" data-html="true">
+            <i class="icon fa fa-question-circle-o text-info fa-fw" title="Help with registration" aria-label="Help with registration">?</i>
+        </a>
+    </div>
+}}
 </form>
 
 {{# js}}
