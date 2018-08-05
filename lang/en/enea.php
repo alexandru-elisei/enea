@@ -149,7 +149,7 @@ $string['recommendedlessons'] = 'Recommended lessons';
 $string['followuplessons'] = 'Follow-up lessons';
 $string['finish'] = 'Add to MyLearning Module';
 
-$string['oops'] = 'Oops!';
+$string['error'] = 'Error';
 $string['errorprelude'] = 'An error occured while precessing your request:';
 $string['back'] = 'Back';
 
