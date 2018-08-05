@@ -22,12 +22,12 @@
     {{/ mod_enea/course_list_heading}}
 
     {{# prereq}}
-    {{< mod_enea/course_list_row}}
+    {{< mod_enea/search_results_row}}
     {{$ elt_name}}{{ id }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
-    {{/ mod_enea/course_list_row}}
+    {{/ mod_enea/search_results_row}}
     {{/ prereq}}
     <br>
     {{/ has_prereq}}
@@ -43,12 +43,12 @@
     {{/ mod_enea/course_list_heading}}
 
     {{# recommended}}
-    {{< mod_enea/course_list_row}}
+    {{< mod_enea/search_results_row}}
     {{$ elt_name}}{{ id }}{{/ elt_name}}
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
-    {{/ mod_enea/course_list_row}}
+    {{/ mod_enea/search_results_row}}
     {{/ recommended}}
 
     {{# has_postreq}}
@@ -64,12 +64,12 @@
     {{/ mod_enea/course_list_heading}}
 
     {{# postreq}}
-    {{< mod_enea/course_list_row}}
+    {{< mod_enea/search_results_row}}
     {{$ elt_name}}{{ id }}{{/ elt_name}}
     {{$ course_title}}{{ uri }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
-    {{/ mod_enea/course_list_row}}
+    {{/ mod_enea/search_results_row}}
     {{/ postreq}}
     {{/ has_postreq}}
 
