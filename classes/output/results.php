@@ -31,8 +31,10 @@ use renderable;
 use templatable;
 use stdClass;
 
+const DEBUG = 0;
+
 /*
- * Compare two courses by thir id.
+ * Compare two courses by their id.
  *
  * @param array $a First course.
  * @param array $b Second course.
@@ -190,12 +192,15 @@ class results implements templatable, renderable {
         }
 
         $data['directdeps'] = json_encode($data['directdeps']);
-        print('<br><br>DIRECT DEPS<br>');
-        print_r($data['directdeps']);
-
         $data['reversedeps'] = json_encode($data['reversedeps']);
-        print('<br>REVERSE DEPS<br>');
-        print_r($data['reversedeps']);
+
+        if (DEBUG == 1) {
+            print('<br><br>DIRECT DEPS<br>');
+            print_r($data['directdeps']);
+
+            print('<br>REVERSE DEPS<br>');
+            print_r($data['reversedeps']);
+        }
 
         // Create a list of all the prerequisites, some of them might be enabled
         // at page load because all the recommended and prerequisite courses are
