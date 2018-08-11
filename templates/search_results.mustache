@@ -27,6 +27,7 @@
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_rawtime}}{{ rawtime }}{{/ course_rawtime}}
     {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ prereq}}
@@ -49,6 +50,7 @@
     {{$ course_title}}{{ title }}{{/ course_title}}
     {{$ course_link}}{{ uri }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_rawtime}}{{ rawtime }}{{/ course_rawtime}}
     {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ recommended}}
@@ -71,6 +73,7 @@
     {{$ course_title}}{{ uri }}{{/ course_title}}
     {{$ course_link}}{{ link }}{{/ course_link}}
     {{$ course_time}}{{ time }}{{/ course_time}}
+    {{$ course_rawtime}}{{ rawtime }}{{/ course_rawtime}}
     {{$ course_help}}{{ help }}{{/ course_help}}
     {{/ mod_enea/search_results_row}}
     {{/ postreq}}
@@ -79,7 +82,7 @@
     <br>
 
     <div class="form-row text-left ">
-        <p>{{# str}} totaltime, mod_enea {{/ str}}: {{ time }}</p>
+        <p id='totaltime'>{{# str}} totaltime, mod_enea {{/ str}}: 0</p>
     </div>
 
     <div style="display: none">
@@ -112,10 +115,49 @@
 </form>
 
 {{# js}}
+
+    // Return ddhhmm time from time in minutes.
+    function pretty_time(rawtime) {
+        var ret = ''
+        var hoursminutes = 0
+        var days = 0
+
+        rawtime = parseInt(rawtime)
+
+        hoursminutes = rawtime % (60*24)
+        days = (rawtime - hoursminutes) / (60*24)
+        if (days > 0) {
+            ret = ret + days + 'd'
+        }
+
+        var minutes = hoursminutes % 60
+        var hours = (hoursminutes - minutes) / 60;
+        if (hours > 0 || ret != '') {
+            ret = ret + hours + 'h';
+        }
+        ret = ret + minutes + 'm';
+
+        return ret;
+    }
+
+    function update_total_time(total_time) {
+        var new_time_text = "Total time: " + pretty_time(total_time)
+        document.getElementById("totaltime").innerHTML = new_time_text
+    }
+
     require(['jquery'], function($) {
         $('document').ready(function() {
             var directdeps = JSON.parse($('[name="directdeps"]').val())
             var reversedeps = JSON.parse($('[name="reversedeps"]').val())
+
+            var total_time = 0
+
+            // All recommended lessons are enabled and checked by default.
+            {{# recommended}}
+            $("[name='{{ id }}']").prop('disabled', false)
+            $("[name='{{ id }}']").prop('checked', true)
+            total_time = total_time + {{ rawtime }}
+            {{/ recommended}}
 
             // When loading the document, disable all the courses that have a
             // dependency because there are no checked checkboxes on the page.
@@ -129,16 +171,11 @@
             });
             */
 
-            // All recommended lessons are enabled and checked by default.
-            {{# recommended}}
-            $("[name='{{ id }}']").prop('disabled', false)
-            $("[name='{{ id }}']").prop('checked', true)
-            {{/ recommended}}
-
             // All prerequisite lessons are enabled and checked by default.
             {{# prereq}}
             $("[name='{{ id }}']").prop('disabled', false)
             $("[name='{{ id }}']").prop('checked', true)
+            total_time = total_time + {{ rawtime }}
             {{/ prereq}}
 
             // Disable only those postrequisites that don't have all of their
@@ -155,9 +192,13 @@
                 if (to_disable) {
                     $("[name='{{ id }}']").prop('checked', false)
                     $("[name='{{ id }}']").prop('disabled', true)
+                } else {
+                    total_time = total_time + {{ rawtime }}
                 }
             }
             {{/ postreq}}
+
+            update_total_time(total_time)
 
             // For each course 'id' that has courses that depend on it check if
             // the courses that depend on it can be enabled when 'id' is
@@ -165,13 +206,20 @@
             $.each(reversedeps, function(id, revdeps) {
                 $("[name='" + id + "']").change(function() {
                     if (!this.checked) {
+                        var rawtime = parseInt($('[name="' + id + '_rawtime"]').val())
                         // If 'id' is unchecked then disable all the courses
                         // that depend on it.
                         $.each(revdeps, function(_, revdep) {
+                            if ($("[name='" + revdep + "']").prop('checked')) {
+                                rawtime = rawtime + parseInt($('[name="' + revdep + '_rawtime"]').val())
+                                $("[name='" + revdep + "']").prop('checked', false)
+                            }
                             $("[name='" + revdep + "']").prop('disabled', true)
-                            $("[name='" + revdep + "']").prop('checked', false)
                         });
+
+                        total_time = total_time - rawtime
                     } else {
+                        var rawtime = parseInt($('[name="' + id + '_rawtime"]').val())
                         // Enable each course that depends on 'id' if all their
                         // dependencies are checked.
                         $.each(revdeps, function(_, revdep) {
@@ -189,10 +237,76 @@
                             } else {
                                 $("[name='" + revdep + "']").prop('disabled', true)
                             }
+
                         });
+
+                        total_time = total_time + rawtime
                     }
+
+                    update_total_time(total_time)
                 });
             });
+
+            // Courses that have reverse dependencies have their contribution
+            // to the total time modified when they are toggled. Do not include
+            // their total time twice.
+
+            {{# recommended}}
+            $("[name='{{ id }}']").change(function() {
+                var already_processed = false
+                $.each(reversedeps, function(id, revdeps) {
+                    if (id == "{{ id }}") {
+                        already_processed = true
+                    }
+                })
+                if (!already_processed) {
+                    if (!this.checked) {
+                        total_time = total_time - {{ rawtime }}
+                    } else {
+                        total_time = total_time + {{ rawtime }}
+                    }
+                    update_total_time(total_time)
+                }
+            })
+            {{/ recommended}}
+
+            {{# prereq}}
+            $("[name='{{ id }}']").change(function() {
+                var already_processed = false
+                $.each(reversedeps, function(id, revdeps) {
+                    if (id == "{{ id }}") {
+                        already_processed = true
+                    }
+                })
+                if (!already_processed) {
+                    if (!this.checked) {
+                        total_time = total_time - {{ rawtime }}
+                    } else {
+                        total_time = total_time + {{ rawtime }}
+                    }
+                    update_total_time(total_time)
+                }
+            })
+            {{/ prereq}}
+
+            {{# postreq}}
+            $("[name='{{ id }}']").change(function() {
+                var already_processed = false
+                $.each(reversedeps, function(id, revdeps) {
+                    if (id == "{{ id }}") {
+                        already_processed = true
+                    }
+                })
+                if (!already_processed) {
+                    if (!this.checked) {
+                        total_time = total_time - {{ rawtime }}
+                    } else {
+                        total_time = total_time + {{ rawtime }}
+                    }
+                    update_total_time(total_time)
+                }
+            })
+            {{/ postreq}}
 
             $('#search-results-form').on('reset', function() {
                 setTimeout(function() {
@@ -201,9 +315,11 @@
                         $("[name='" + id + "']").prop('checked', false);
 
                     });
-
+                total_time = 0
+                update_total_time(0)
                 });
             });
+
         });
     });
 {{/ js}}

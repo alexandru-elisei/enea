@@ -112,6 +112,7 @@ class results implements templatable, renderable {
         $coursedeps = array();
         foreach($searchresults['data']['lessons'] as $key => $course) {
 
+            $searchresults['data']['lessons'][$key]['rawtime'] = $course['time'];
             $searchresults['data']['lessons'][$key]['time'] = $this->timestr($course['time']);
             $searchresults['data']['lessons'][$key]['title'] = $course['id'].' '.$course['title'];
 
@@ -226,7 +227,7 @@ class results implements templatable, renderable {
             $data['cmid'] = $searchresults['cmid'];
         }
 
-        $data['time'] = $this->timestr($searchresults['data']['time']);
+        //$data['time'] = $this->timestr($searchresults['data']['time']);
 
         $this->data = $data;
     }
