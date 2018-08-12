@@ -147,6 +147,21 @@ if ($stage == stage::SELECT_KEYWORDS) {
         goto render_page;
     }
 
+    if (isset($formdata['backbutton'])) {
+        $data = $pagecontext;
+        $renderer = new \mod_enea\output\select($data);
+        $template = 'mod_enea/select';
+
+        // Clear search results.
+        $DB->set_field('enea_users', 'searchresults', '', array('userid' => $userid));
+        // Reset the process.
+        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
+        $stage = stage::SELECT_KEYWORDS;
+
+        goto render_page;
+    }
+
+
     $searchresults = $DB->get_record('enea_users', array('userid' => $userid), 'searchresults', MUST_EXIST);
     if (DEBUG == 1) {
         print_deb($searchresults->searchresults);
