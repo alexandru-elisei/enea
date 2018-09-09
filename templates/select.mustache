@@ -15,10 +15,10 @@
         </div>
     </div>
 
-    {{< mod_enea/select_row}}
+    {{< mod_enea/select_expand_row}}
     {{$ option_name}}medicine{{/ option_name}}
     {{$ option_text}}{{# str}} medicine, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
+    {{/ mod_enea/select_expand_row}}
 
     <div name="medrevdeps" style="display:none">
         {{# medrevdeps}}
@@ -56,10 +56,10 @@
         </div>
     </div>
 
-    {{< mod_enea/select_row}}
+    {{< mod_enea/select_expand_row}}
     {{$ option_name}}pregnancy{{/ option_name}}
     {{$ option_text}}{{# str}} pregnancy, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
+    {{/ mod_enea/select_expand_row}}
 
     <div name="pregnancyrevdeps" style="display:none">
         {{# pregnancyrevdeps}}
@@ -70,11 +70,10 @@
         {{/ pregnancyrevdeps}}
     </div>
 
-
-    {{< mod_enea/select_row}}
+    {{< mod_enea/select_expand_row}}
     {{$ option_name}}breastfeeding{{/ option_name}}
     {{$ option_text}}{{# str}} breastfeeding, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
+    {{/ mod_enea/select_expand_row}}
 
     <div name="bfrevdeps" style="display:none">
         {{# bfrevdeps}}
@@ -85,10 +84,10 @@
         {{/ bfrevdeps}}
     </div>
 
-    {{< mod_enea/select_row}}
+    {{< mod_enea/select_expand_row}}
     {{$ option_name}}breastmilksubst{{/ option_name}}
     {{$ option_text}}{{# str}} breastmilksubst, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
+    {{/ mod_enea/select_expand_row}}
 
     <div name="bmsrevdeps" style="display:none">
         {{# bmsrevdeps}}
@@ -99,10 +98,10 @@
         {{/ bmsrevdeps}}
     </div>
 
-    {{< mod_enea/select_row}}
+    {{< mod_enea/select_expand_row}}
     {{$ option_name}}preterm{{/ option_name}}
     {{$ option_text}}{{# str}} preterm, mod_enea {{/ str}}{{/ option_text}}
-    {{/ mod_enea/select_row}}
+    {{/ mod_enea/select_expand_row}}
 
     <div name="pretermrevdeps" style="display:none">
         {{# pretermrevdeps}}
@@ -179,6 +178,15 @@
 
 {{# js}}
     require(['jquery'], function($) {
+
+        $('[name="medicine_expand_collapse"]').click(function () {
+            $('[name="medrevdeps"]').toggle(300);
+        });
+
+        /*
+         * When checked, expand and select all children courses. When unchecked,
+         * deselect all children courses.
+         */
         $('[name="medicine"]').change(function() {
             if (this.checked) {
                 $('[name="medrevdeps"]').show(300);
@@ -186,25 +194,34 @@
                 $('[name="{{ name }}"]').prop('checked', true);
                 {{/ medrevdeps}}
             } else {
-                $('[name="medrevdeps"]').hide(300);
                 {{# medrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ medrevdeps}}
             }
         });
 
-        $('[name="breastfeeding"]').change(function() {
-            if (this.checked) {
-                $('[name="bfrevdeps"]').show(300);
-                {{# bfrevdeps}}
-                $('[name="{{ name }}"]').prop('checked', true);
-                {{/ bfrevdeps}}
-            } else {
-                $('[name="bfrevdeps"]').hide(300);
-                {{# bfrevdeps}}
-                $('[name="{{ name }}"]').prop('checked', false);
-                {{/ bfrevdeps}}
+        /*
+         * Uncheck medicine when all children courses are deselected. Check
+         * medicine when at least one children course is checked.
+         */
+        {{# medrevdeps}}
+        $('[name="{{ name }}"]').change(function() {
+            var all_disabled = true;
+            {{# medrevdeps}}
+            if ($('[name="{{ name }}"]').prop('checked')) {
+                all_disabled = false;
+                if (!($('[name="medicine"]').prop('checked')))
+                    $('[name="medicine"]').prop('checked', true);
             }
+            {{/ medrevdeps}}
+            if (all_disabled) {
+                $('[name="medicine"]').prop('checked', false);
+            }
+        });
+        {{/ medrevdeps}}
+
+        $('[name="pregnancy_expand_collapse"]').click(function () {
+            $('[name="pregnancyrevdeps"]').toggle(300);
         });
 
         $('[name="pregnancy"]').change(function() {
@@ -214,11 +231,34 @@
                 $('[name="{{ name }}"]').prop('checked', true);
                 {{/ pregnancyrevdeps}}
             } else {
-                $('[name="pregnancyrevdeps"]').hide(300);
                 {{# pregnancyrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ pregnancyrevdeps}}
             }
+        });
+
+        /*
+         * Uncheck pregnancy when all children courses are deselected. Check
+         * pregnancy when at least one children course is checked.
+         */
+        {{# pregnancyrevdeps}}
+        $('[name="{{ name }}"]').change(function() {
+            var all_disabled = true;
+            {{# pregnancyrevdeps}}
+            if ($('[name="{{ name }}"]').prop('checked')) {
+                all_disabled = false;
+                if (!($('[name="pregnancy"]').prop('checked')))
+                    $('[name="pregnancy"]').prop('checked', true);
+            }
+            {{/ pregnancyrevdeps}}
+            if (all_disabled) {
+                $('[name="pregnancy"]').prop('checked', false);
+            }
+        });
+        {{/ pregnancyrevdeps}}
+
+        $('[name="breastfeeding_expand_collapse"]').click(function () {
+            $('[name="bfrevdeps"]').toggle(300);
         });
 
         $('[name="breastfeeding"]').change(function() {
@@ -228,11 +268,34 @@
                 $('[name="{{ name }}"]').prop('checked', true);
                 {{/ bfrevdeps}}
             } else {
-                $('[name="bfrevdeps"]').hide(300);
                 {{# bfrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ bfrevdeps}}
             }
+        });
+
+        /*
+         * Uncheck breastfeeding when all children courses are deselected.
+         * Check breastfeeding when at least one children course is checked.
+         */
+        {{# bfrevdeps}}
+        $('[name="{{ name }}"]').change(function() {
+            var all_disabled = true;
+            {{# bfrevdeps}}
+            if ($('[name="{{ name }}"]').prop('checked')) {
+                all_disabled = false;
+                if (!($('[name="breastfeeding"]').prop('checked')))
+                    $('[name="breastfeeding"]').prop('checked', true);
+            }
+            {{/ bfrevdeps}}
+            if (all_disabled) {
+                $('[name="breastfeeding"]').prop('checked', false);
+            }
+        });
+        {{/ bfrevdeps}}
+
+        $('[name="breastmilksubst_expand_collapse"]').click(function () {
+            $('[name="bmsrevdeps"]').toggle(300);
         });
 
         $('[name="breastmilksubst"]').change(function() {
@@ -242,11 +305,34 @@
                 $('[name="{{ name }}"]').prop('checked', true);
                 {{/ bmsrevdeps}}
             } else {
-                $('[name="bmsrevdeps"]').hide(300);
                 {{# bmsrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ bmsrevdeps}}
             }
+        });
+
+        /*
+         * Uncheck breastmilksubst when all children courses are deselected.
+         * Check breastmilksubst when at least one children course is checked.
+         */
+        {{# bmsrevdeps}}
+        $('[name="{{ name }}"]').change(function() {
+            var all_disabled = true;
+            {{# bmsrevdeps}}
+            if ($('[name="{{ name }}"]').prop('checked')) {
+                all_disabled = false;
+                if (!($('[name="breastmilksubst"]').prop('checked')))
+                    $('[name="breastmilksubst"]').prop('checked', true);
+            }
+            {{/ bmsrevdeps}}
+            if (all_disabled) {
+                $('[name="breastmilksubst"]').prop('checked', false);
+            }
+        });
+        {{/ bmsrevdeps}}
+
+        $('[name="preterm_expand_collapse"]').click(function () {
+            $('[name="pretermrevdeps"]').toggle(300);
         });
 
         $('[name="preterm"]').change(function() {
@@ -256,11 +342,30 @@
                 $('[name="{{ name }}"]').prop('checked', true);
                 {{/ pretermrevdeps}}
             } else {
-                $('[name="pretermrevdeps"]').hide(300);
                 {{# pretermrevdeps}}
                 $('[name="{{ name }}"]').prop('checked', false);
                 {{/ pretermrevdeps}}
             }
         });
+
+        /*
+         * Uncheck preterm when all children courses are deselected.
+         * Check preterm when at least one children course is checked.
+         */
+        {{# pretermrevdeps}}
+        $('[name="{{ name }}"]').change(function() {
+            var all_disabled = true;
+            {{# pretermrevdeps}}
+            if ($('[name="{{ name }}"]').prop('checked')) {
+                all_disabled = false;
+                if (!($('[name="preterm"]').prop('checked')))
+                    $('[name="preterm"]').prop('checked', true);
+            }
+            {{/ pretermrevdeps}}
+            if (all_disabled) {
+                $('[name="breastmilksubst"]').prop('checked', false);
+            }
+        });
+        {{/ pretermrevdeps}}
     });
 {{/ js}}
