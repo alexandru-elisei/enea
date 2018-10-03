@@ -40,8 +40,9 @@ $string['chooseoptions'] = 'Please choose from the options listed below to gener
 $string['selectoptions'] = 'Select Options';
 
 $string['fieldofexpertise'] = 'Field of Expertise';
-$string['foehelp'] = 'Field of Expertise';
-$string['foehelp_help'] = 'Please select your field of study.';
+$string['fieldofexpertise_help'] = 'Field of expertise help placeholder';
+$string['fieldofexpertise_helptitle'] = 'Help with field of expertise';
+
 $string['medicine'] = 'Medicine';
 $string['nursing_midwifery'] = 'Nursing / Midwifery';
 $string['nutrition_dietetics'] = 'Nutrition / Dietetics';
@@ -53,6 +54,8 @@ $string['generalpractice_familymedicine'] = 'General Practice / Family Medicine'
 $string['specialistotherareas'] = 'Specialist Other Areas';
 
 $string['topics'] = 'Topics you are interested in';
+$string['topics_help'] = 'Topics help placeholder.';
+$string['topics_helptitle'] = 'Help with topics';
 
 $string['pregnancy'] = 'Pregnancy';
 $string['physiology'] = 'Physiology';
@@ -121,13 +124,21 @@ $string['lowresource'] = 'Low-resource';
 $string['postdischarge'] = 'Post-discharge';
 
 $string['othertopics'] = 'Other topics';
+$string['othertopics_help'] = 'Other topics help placeholder';
+$string['othertopics_helptitle'] = 'Help with other topics';
 
 $string['themes'] = 'Themes';
+$string['themes_help'] = 'Themes help placeholder';
+$string['themes_helptitle'] = 'Help with themes';
+
 $string['background'] = 'Background';
 $string['practicecounselling'] = 'Practice & Counselling';
 $string['guidelines'] = 'Guidelines';
 
 $string['cmepoints'] = 'CME points';
+$string['cmepoints_help'] = 'CME points help placeholder';
+$string['cmepoints_helptitle'] = 'Help with CME points';
+
 $string['cmeaccredited'] = 'CME Accredited';
 $string['clear'] = 'Clear';
 $string['missingidandcmid'] = 'Missing course module ID and missing module instance ID';

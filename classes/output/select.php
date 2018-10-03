@@ -109,6 +109,15 @@ class select implements templatable, renderable {
         }
         $this->data->medrevdeps = $medrevdeps;
 
+        $pregnancyrevdeps = array();
+        foreach ($this->pregnancyrevdeps as $name) {
+            $pregnancyrevdeps[] = array(
+                'name' => 'preg'.$name,
+                'text' => get_string($name, 'mod_enea'),
+            );
+        }
+        $this->data->pregnancyrevdeps = $pregnancyrevdeps;
+
         $bfrevdeps = array();
         foreach ($this->bfrevdeps as $name) {
             $bfrevdeps[] = array(
@@ -126,15 +135,6 @@ class select implements templatable, renderable {
             );
         }
         $this->data->bmsrevdeps = $bmsrevdeps;
-
-        $pregnancyrevdeps = array();
-        foreach ($this->pregnancyrevdeps as $name) {
-            $pregnancyrevdeps[] = array(
-                'name' => 'preg'.$name,
-                'text' => get_string($name, 'mod_enea'),
-            );
-        }
-        $this->data->pregnancyrevdeps = $pregnancyrevdeps;
 
         $pretermrevdeps = array();
         foreach ($this->pretermrevdeps as $name) {
