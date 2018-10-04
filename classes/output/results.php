@@ -59,13 +59,6 @@ class results implements templatable, renderable {
         $searchresults = $searchresults;
         $recommended = array();
 
-        // Add placeholder for help message if not present.
-        foreach ($searchresults['data']['lessons'] as $key => $course) {
-            if (!isset($course['help'])) {
-                $searchresults['data']['lessons'][$key]['help'] = get_string('helpmessageplaceholder', 'mod_enea');
-            }
-        }
-
         foreach ($searchresults['data']['recommended'] as $id) {
             $recommended[$id] = true;
         }
@@ -115,6 +108,7 @@ class results implements templatable, renderable {
             $searchresults['data']['lessons'][$key]['rawtime'] = $course['time'];
             $searchresults['data']['lessons'][$key]['time'] = $this->timestr($course['time']);
             $searchresults['data']['lessons'][$key]['title'] = $course['id'].' '.$course['title'];
+            $searchresults['data']['lessons'][$key]['cmepoints'] = $course['cmePoints'];
 
             if (!empty($course['prerequisites'])) {
                 // Mark the dependency.
