@@ -162,6 +162,7 @@ $string['finish'] = 'Add to MyLearning Module';
 
 $string['error'] = 'Error';
 $string['errorprelude'] = 'An error occured while precessing your request:';
+$string['emptysearchresults'] = 'Empty search results';
 $string['back'] = 'Back';
 
 $string['successhdr'] = 'Congratulations!';

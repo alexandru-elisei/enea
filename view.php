@@ -172,6 +172,18 @@ if ($stage == stage::SELECT_KEYWORDS) {
     //$searchresults->searchresults = '{"data":{"lessons":[{"id":"3.3.3","title":"Optional Components of Infant Formula","uri":"here1","time":10,"similarityScore":0.7264344035877423,"prerequisites":["3.3.1"],"postrequisites":["2.1.2"]},{"id":"2.1.2","title":"Composition of Human Milk","uri":"here2","time":15,"similarityScore":0.7229355471400114,"prerequisites":["2.1.1"],"postrequisites":[]},{"id":"3.3.2","title":"Major Components of Infant Formula","uri":"here3","time":15,"similarityScore":0.7116147619386389,"prerequisites":["3.3.1"],"postrequisites":["3.3.3"]},{"id":"3.4.2","title":"Correct Formula Preparation","uri":"here4","time":15,"similarityScore":0.6896124373988142,"prerequisites":["3.4.1"],"postrequisites":[]},{"id":"3.4.3","title":"Correct Bottle-Feeding Practice","uri":"here5","time":10,"similarityScore":0.7088258492646591,"prerequisites":[],"postrequisites":["3.4.4"]},{"id":"3.2.2","title":"Non-Medical Reasons for Formula Feeding","uri":"here6","time":15,"similarityScore":0.6753481420126302,"prerequisites":[],"postrequisites":["3.2.3"]},{"id":"3.1.2","title":"Case Study:Hypernatremia","uri":"","time":12,"similarityScore":0.9831887343729273,"prerequisites":[],"postrequisites":[]},{"id":"3.4.4","title":"Weaning From Bottle-Feeding","uri":"here7","time":10,"similarityScore":0.7632517493953542,"prerequisites":[],"postrequisites":["3.4.3"]},{"id":"3.4.1","title":"Preparation of Infant Formula","uri":"here8","time":12,"similarityScore":0.735385076632274,"prerequisites":["3.1.2"],"postrequisites":["3.4.2"]}],"recommended":["3.3.3","2.1.2","3.3.2","3.4.4","3.1.2","3.4.2","3.4.3","3.2.2","3.4.1"],"time":114,"cmePoints":1.9},"success":true,"errorMsg":""}';
     $searchresults = json_decode($searchresults->searchresults, true);
 
+    if (!$searchresults) {
+        $data = array('errormsg' => get_string('emptysearchresults', 'mod_enea'));
+        $data = array_merge($data, $pagecontext);
+        $renderer = new \mod_enea\output\error($data);
+        $template = 'mod_enea/error';
+
+        // Reset the selection.
+        $DB->set_field('enea_users', 'stage', stage::SELECT_KEYWORDS, array('userid' => $userid));
+
+        goto render_page;
+    }
+
     if (!$searchresults['success']) {
         $data = array('errormsg' => $searchresults['errorMsg']);
         $data = array_merge($data, $pagecontext);
