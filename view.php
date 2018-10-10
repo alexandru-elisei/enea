@@ -75,11 +75,13 @@ $mform = null;
 
 $stage = $DB->get_record('enea_users', array('userid' => $userid), 'stage', IGNORE_MISSING);
 if (!$stage) {
+    $stage = stage::SELECT_COURSES;
+
     $record = new stdClass();
     $record->userid = $userid;
-    $record->stage = stage::SELECT_COURSES;
+    $record->stage = $stage;
+    $record->searchresults = '';
     $DB->insert_record('enea_users', $record, false);
-    $stage = stage::SELECT_COURSES;
 } else {
     $stage = $stage->stage;
 }

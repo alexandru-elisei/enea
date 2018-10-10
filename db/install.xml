@@ -22,12 +22,13 @@
 
       <TABLE NAME="enea_users" COMMENT="ENEA user tracking">
           <FIELDS>
+              <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
               <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
               <FIELD NAME="stage" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-              <FIELD NAME="searchresults" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="query results"/>
+              <FIELD NAME="searchresults" TYPE="text" NOTNULL="true" DEFAULTL="" SEQUENCE="false" COMMENT="query results"/>
           </FIELDS>
           <KEYS>
-              <KEY NAME="primary" TYPE="primary" FIELDS="userid"/>
+              <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
           </KEYS>
       </TABLE>
   </TABLES>
