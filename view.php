@@ -75,7 +75,7 @@ $mform = null;
 
 $stage = $DB->get_record('enea_users', array('userid' => $userid), 'stage', IGNORE_MISSING);
 if (!$stage) {
-    $stage = stage::SELECT_COURSES;
+    $stage = stage::SELECT_KEYWORDS;
 
     $record = new stdClass();
     $record->userid = $userid;
