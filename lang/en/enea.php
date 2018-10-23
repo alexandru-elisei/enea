@@ -40,8 +40,8 @@ $string['chooseoptions'] = 'Please choose from the options listed below to gener
 $string['selectoptions'] = 'Select Options';
 
 $string['fieldofexpertise'] = 'Field of Expertise';
-$string['fieldofexpertise_help'] = 'Field of expertise help placeholder';
-$string['fieldofexpertise_helptitle'] = 'Help with field of expertise';
+$string['fieldofexpertise_help'] = 'Please select your main field of expertise. Note that some domains have more specific subdomains, in which case you should either choose the general one or the more specific.';
+$string['fieldofexpertise_helptitle'] = '';
 
 $string['medicine'] = 'Medicine';
 $string['nursing_midwifery'] = 'Nursing / Midwifery';
@@ -54,8 +54,8 @@ $string['generalpractice_familymedicine'] = 'General Practice / Family Medicine'
 $string['specialistotherareas'] = 'Specialist Other Areas';
 
 $string['topics'] = 'Topics you are interested in';
-$string['topics_help'] = 'Topics help placeholder.';
-$string['topics_helptitle'] = 'Help with topics';
+$string['topics_help'] = 'Please select the topics you are interested to study. You could either select an entire general domain, or more specific domains.';
+$string['topics_helptitle'] = '';
 
 $string['pregnancy'] = 'Pregnancy';
 $string['physiology'] = 'Physiology';
@@ -123,21 +123,21 @@ $string['specificmanagement'] = 'Specific Management';
 $string['lowresource'] = 'Low-resource';
 $string['postdischarge'] = 'Post-discharge';
 
-$string['othertopics'] = 'Other topics';
-$string['othertopics_help'] = 'Other topics help placeholder';
-$string['othertopics_helptitle'] = 'Help with other topics';
+$string['othertopics'] = 'Additional topics of interest';
+$string['othertopics_help'] = 'Please write in natural language a short text describing what your interests and topics of research are. The more detailed the explanation is, the more specific the list of lessons should be.';
+$string['othertopics_helptitle'] = '';
 
 $string['themes'] = 'Themes';
-$string['themes_help'] = 'Themes help placeholder';
-$string['themes_helptitle'] = 'Help with themes';
+$string['themes_help'] = 'Please choose what kind of materials you would like to be provided: background science, practice & counselling articles, or general guidelines.';
+$string['themes_helptitle'] = '';
 
 $string['background'] = 'Background';
 $string['practicecounselling'] = 'Practice & Counselling';
 $string['guidelines'] = 'Guidelines';
 
 $string['cmepoints'] = 'CME points';
-$string['cmepoints_help'] = 'CME points help placeholder';
-$string['cmepoints_helptitle'] = 'Help with CME points';
+$string['cmepoints_help'] = 'Please select whether you are interested in obtaining CME accreditation for the personalised curricula.';
+$string['cmepoints_helptitle'] = '';
 
 $string['cmeaccredited'] = 'CME Accredited';
 $string['clear'] = 'Clear';
