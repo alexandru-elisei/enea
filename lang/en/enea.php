@@ -126,6 +126,7 @@ $string['postdischarge'] = 'Post-discharge';
 $string['othertopics'] = 'Additional topics of interest';
 $string['othertopics_help'] = 'Please write in natural language a short text describing what your interests and topics of research are. The more detailed the explanation is, the more specific the list of lessons should be.';
 $string['othertopics_helptitle'] = '';
+$string['othertopics_placeholder'] = 'Please provide a description of your topics of interests (minimum 15 words).';
 
 $string['themes'] = 'Themes';
 $string['themes_help'] = 'Please choose what kind of materials you would like to be provided: background science, practice & counselling articles, or general guidelines.';
@@ -172,5 +173,6 @@ $string['successtext'] = 'You have been enrolled in the courses you have selecte
 
 $string['totaltime'] = 'Total time';
 $string['cmepoints'] = 'CME Points';
+$string['totalcmepoints'] = 'Total CME points';
 
 $string['helpmessageplaceholder'] = 'Help message placeholder';
