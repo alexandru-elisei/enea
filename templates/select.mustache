@@ -11,15 +11,16 @@
 <form id="search-results-form">
     <div class="row">
         <div class="text-left col-xs-8 col-md-6 col-lg-6 lead">
-            <p id="fieldofexpertise"><dt><u>{{# str}} fieldofexpertise, mod_enea {{/ str}}</u>
+            <p id="fieldofexpertise">
+                <dt><u>{{# str}} fieldofexpertise, mod_enea {{/ str}}</u>{{< mod_enea/red_asterisk}}{{/ mod_enea/red_asterisk}}
                 <a class="btn btn-link p-a-0" role="button" tabindex="0"
                 data-container="body" data-toggle="popover" data-placement="right"
                 data-content="{{# str}} fieldofexpertise_help, mod_enea {{/ str}}"
-                name="here_help" data-trigger="focus">
+                name="fieldofexpertise_help" data-trigger="focus">
                     <i class="icon fa fa-question-circle-o text-info fa-fw"
                     title="{{# str}} fieldofexpertise_helptitle, mod_enea {{/ str}}">?</i>
-                </a>
-            </dt></p>
+                </dt></a>
+            </p>
         </div>
     </div>
 
@@ -60,7 +61,7 @@
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
-            <p id="topics"><dt><u>{{# str}} topics, mod_enea {{/ str}}<u>
+            <p id="topics"><dt><u>{{# str}} topics, mod_enea {{/ str}}</u>{{< mod_enea/red_asterisk}}{{/ mod_enea/red_asterisk}}
                 <a class="btn btn-link p-a-0" role="button" tabindex="0"
                 data-container="body" data-toggle="popover" data-placement="right"
                 data-content="{{# str}} topics_help, mod_enea {{/ str}}"
@@ -131,7 +132,7 @@
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
-            <p id="othertopics"><dt><u>{{# str}} othertopics, mod_enea {{/ str}}<u>
+            <p id="othertopics"><dt><u>{{# str}} othertopics, mod_enea {{/ str}}</u>{{< mod_enea/red_asterisk}}{{/ mod_enea/red_asterisk}}
                 <a class="btn btn-link p-a-0" role="button" tabindex="0"
                 data-container="body" data-toggle="popover" data-placement="right"
                 data-content="{{# str}} othertopics_help, mod_enea {{/ str}}"
@@ -153,7 +154,7 @@
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
-            <p id="themes"><dt><u>{{# str}} themes, mod_enea {{/ str}}<u>
+            <p id="themes"><dt><u>{{# str}} themes, mod_enea {{/ str}}</u>{{< mod_enea/red_asterisk}}{{/ mod_enea/red_asterisk}}
                 <a class="btn btn-link p-a-0" role="button" tabindex="0"
                 data-container="body" data-toggle="popover" data-placement="right"
                 data-content="{{# str}} themes_help, mod_enea {{/ str}}"
@@ -183,7 +184,7 @@
     <br>
     <div class="row">
         <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
-            <p id="cmepoints"><dt><u>{{# str}} cmepoints, mod_enea {{/ str}}<u>
+            <p id="cmepoints"><dt><u>{{# str}} cmepoints, mod_enea {{/ str}}</u>
                 <a class="btn btn-link p-a-0" role="button" tabindex="0"
                 data-container="body" data-toggle="popover" data-placement="right"
                 data-content="{{# str}} cmepoints_help, mod_enea {{/ str}}"
@@ -199,6 +200,13 @@
     {{$ option_name}}cme{{/ option_name}}
     {{$ option_text}}{{# str}} cmeaccredited, mod_enea {{/ str}}{{/ option_text}}
     {{/ mod_enea/select_row}}
+
+    </br>
+    <div class="row">
+        <div class="text-left col-xs-10 col-md-8 col-lg-8 lead">
+            <p style="font-size:14px;"><strong style="color:red;">*</strong>: {{# str}} required_option, mod_enea{{/ str}}.</p>
+        </div>
+    </div>
 
     <div style="display: none">
         {{# id}}

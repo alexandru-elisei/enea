@@ -145,6 +145,8 @@ $string['missingidandcmid'] = 'Missing course module ID and missing module insta
 $string['missingrecommended'] = 'No courses matching your criteria were found';
 $string['search'] = 'Search';
 
+$string['required_option'] = 'required option';
+
 $string['waitinghdr'] = 'Processing your request';
 $string['waitingtext'] = 'Please wait while we search for courses matching your criteria. You will be automatically redirected when the results are ready';
 $string['refresh'] = 'Refresh';
